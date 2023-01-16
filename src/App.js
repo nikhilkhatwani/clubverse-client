@@ -10,6 +10,7 @@ import { getFromStorage, setInStorage } from "./utils/api/storage";
 import { userVerify } from "./utils/api/calls/users";
 
 import {
+  LandingPage,
   LoginPage,
   RegisterPage,
   SchoolPage,
@@ -20,11 +21,14 @@ import {
   ClubSettingsPage,
   UserSettingsPage,
   SchoolSettingsPage,
+  NotFoundPage,
 } from "./pages";
+import { Loading } from "./components";
 
 export default function App() {
   const [user, setUser] = useState({});
   const [token, setToken] = useState("");
+  const [school, setSchool] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -48,29 +52,43 @@ export default function App() {
     verifyUser();
   }, []);
 
+  useEffect(() => {
+    if (token === "") return;
+    setInStorage("Clubverse", { token: token });
+  }, [token]);
+
   if (isLoading) {
-    return <div>Loading...</div>;
-    // replace with component of loading animation later
+    return <Loading />;
   }
+
+  console.log(JSON.stringify(user) !== "{}");
 
   return (
     <>
       <Router>
         <Routes>
           {/* Landing Page */}
-          <Route exact path="/">
-            {/* Landing Page Component Here */}
-          </Route>
+          <Route
+            exact
+            path="/"
+            element={
+              JSON.stringify(user) !== "{}" ? (
+                <Navigate replace to={`/${user.school.link}`} />
+              ) : (
+                <LandingPage />
+              )
+            }
+          />
 
           {/* Login Page*/}
           <Route
             exact
             path="/login"
             element={
-              Object.keys(user).length !== 0 ? (
+              JSON.stringify(user) !== "{}" ? (
                 <Navigate replace to={`/${user.school.link}`} />
               ) : (
-                LoginPage
+                <LoginPage />
               )
             }
           />
@@ -80,13 +98,16 @@ export default function App() {
             exact
             path="/register"
             element={
-              Object.keys(user).length !== 0 ? (
+              JSON.stringify(user) !== "{}" ? (
                 <Navigate replace to={`/${user.school.link}`} />
               ) : (
-                RegisterPage
+                <RegisterPage setToken={setToken} setUser={setUser} />
               )
             }
           />
+
+          {/* 404 Page */}
+          <Route exact path="/404" element={<NotFoundPage />} />
 
           {/* School Page */}
           {/* NOTE: Need to check if this is user school in component */}
@@ -94,8 +115,8 @@ export default function App() {
             exact
             path="/:schoolLink"
             element={
-              Object.keys(user).length !== 0 ? (
-                SchoolPage
+              JSON.stringify(user) !== "{}" ? (
+                <SchoolPage user={user} setUser={setUser} setToken={setToken} />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -109,8 +130,8 @@ export default function App() {
             exact
             path="/:schoolLink/:clubId"
             element={
-              Object.keys(user).length !== 0 ? (
-                ClubPage
+              JSON.stringify(user) !== "{}" ? (
+                <ClubPage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -124,8 +145,8 @@ export default function App() {
             exact
             path="/:schoolLink/:clubId/members"
             element={
-              Object.keys(user).length !== 0 ? (
-                ClubMemberPage
+              JSON.stringify(user) !== "{}" ? (
+                <ClubMemberPage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -139,8 +160,8 @@ export default function App() {
             exact
             path="/:schoolLink/:clubId/attendance"
             element={
-              Object.keys(user).length !== 0 ? (
-                ClubAttendancePage
+              JSON.stringify(user) !== "{}" ? (
+                <ClubAttendancePage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -154,8 +175,8 @@ export default function App() {
             exact
             path="/:schoolLink/:clubId/dues"
             element={
-              Object.keys(user).length !== 0 ? (
-                ClubDuesPage
+              JSON.stringify(user) !== "{}" ? (
+                <ClubDuesPage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -169,8 +190,8 @@ export default function App() {
             exact
             path="/:schoolLink/:clubId/settings"
             element={
-              Object.keys(user).length !== 0 ? (
-                ClubSettingsPage
+              JSON.stringify(user) !== "{}" ? (
+                <ClubSettingsPage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -183,8 +204,8 @@ export default function App() {
             exact
             path="/:schoolLink/:userId/settings"
             element={
-              Object.keys(user).length !== 0 ? (
-                UserSettingsPage
+              JSON.stringify(user) !== "{}" ? (
+                <UserSettingsPage />
               ) : (
                 <Navigate replace to="/login" />
               )
@@ -197,9 +218,9 @@ export default function App() {
             exact
             path="/:schoolLink/settings"
             element={
-              Object.keys(user).length !== 0 ? (
+              JSON.stringify(user) !== "{}" ? (
                 user.type === "admin" ? (
-                  SchoolSettingsPage
+                  <SchoolSettingsPage />
                 ) : (
                   <Navigate replace to={`/${user.school.link}`} />
                 )
@@ -208,11 +229,6 @@ export default function App() {
               )
             }
           />
-
-          {/* 404 Page */}
-          <Route exact path="/404">
-            {/* 404 Page Component Here */}
-          </Route>
 
           {/* Redirect 404 Route */}
           <Route path="*" element={<Navigate replace to="/404" />} />
