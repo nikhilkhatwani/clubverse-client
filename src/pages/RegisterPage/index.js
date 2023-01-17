@@ -29,6 +29,10 @@ export default function RegisterPage({ setToken, setUser }) {
   });
   const [studentJSON, setStudentJSON] = useState([]);
   const [sponsorJSON, setSponsorJSON] = useState([]);
+  const [fileNames, setFileNames] = useState({
+    studentUpload: "",
+    sponsorUpload: "",
+  });
   const [school, setSchool] = useState({});
 
   const navigate = useNavigate();
@@ -40,6 +44,10 @@ export default function RegisterPage({ setToken, setUser }) {
 
     if (name === "studentUpload") {
       if (e.target.files) {
+        setFileNames({
+          ...fileNames,
+          studentUpload: e.target.files[0].name,
+        });
         const reader = new FileReader();
         reader.onload = (e) => {
           const data = e.target.result;
@@ -53,6 +61,11 @@ export default function RegisterPage({ setToken, setUser }) {
       }
     } else if (name === "sponsorUpload") {
       if (e.target.files) {
+        setFileNames({
+          ...fileNames,
+          sponsorUpload: e.target.files[0].name,
+        });
+
         const reader = new FileReader();
         reader.onload = (e) => {
           const data = e.target.result;
@@ -118,7 +131,6 @@ export default function RegisterPage({ setToken, setUser }) {
       if (json.length !== 0) {
         // check for duplicates
         let valueArr = json.map((item) => {
-          console.log(item);
           return item.id;
         });
 
@@ -127,7 +139,6 @@ export default function RegisterPage({ setToken, setUser }) {
         });
 
         if (isDuplicate) {
-          console.log("Duplicate IDs found");
           setError("Duplicate IDs found");
         } else {
           setButtonLoading(true);
@@ -147,7 +158,7 @@ export default function RegisterPage({ setToken, setUser }) {
               if (response.success) {
                 setUser(response.user);
                 setToken(response.token);
-                navigate(`/${school.link}`);
+                navigate(`/${response.user.school.link}`);
               } else {
                 setError(response.message);
                 navigate("/login");
@@ -281,8 +292,10 @@ export default function RegisterPage({ setToken, setUser }) {
                 onChange={onChange}
                 style={{ display: "none" }}
               />
-              <label for="studentUpload">
-                Upload student database from excel (.xlsx)
+              <label htmlFor="studentUpload">
+                {studentJSON.length !== 0
+                  ? fileNames.studentUpload
+                  : "Upload student database from excel (.xlsx)"}
                 <div className="upload-file">
                   <p>🡡</p>
                 </div>
@@ -308,8 +321,10 @@ export default function RegisterPage({ setToken, setUser }) {
                 style={{ display: "none" }}
               />
 
-              <label for="sponsorUpload">
-                Upload sponsor database from excel (.xlsx)
+              <label htmlFor="sponsorUpload">
+                {sponsorJSON.length !== 0
+                  ? fileNames.sponsorUpload
+                  : "Upload sponsor database from excel (.xlsx)"}
                 <div className="upload-file">
                   <p>🡡</p>
                 </div>

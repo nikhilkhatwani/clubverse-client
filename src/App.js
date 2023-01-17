@@ -28,7 +28,6 @@ import { Loading } from "./components";
 export default function App() {
   const [user, setUser] = useState({});
   const [token, setToken] = useState("");
-  const [school, setSchool] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -60,8 +59,6 @@ export default function App() {
   if (isLoading) {
     return <Loading />;
   }
-
-  console.log(JSON.stringify(user) !== "{}");
 
   return (
     <>

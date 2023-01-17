@@ -31,6 +31,7 @@ export default function SchoolPage({ user, setUser, setToken }) {
         }
       }
     }
+
     getClubs();
   }, []);
 
