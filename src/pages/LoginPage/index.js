@@ -48,9 +48,7 @@ export default function LoginPage({ setToken, setUser }) {
     }
 
     setIsButtonLoading(true);
-    console.log(schoolSelected);
     let response = await userLogin(schoolSelected._id, username, password);
-    console.log(response);
     if (response.success) {
       setIsButtonLoading(false);
       setError(null);
@@ -92,7 +90,7 @@ export default function LoginPage({ setToken, setUser }) {
       <div className="login-form">
         <h2>Login</h2>
         <p>
-          District not listed? <Link to="/register">Register as an admin</Link>
+          School not listed? <Link to="/register">Register as an admin</Link>
         </p>
         {error && <p className="error">{error}</p>}
         <div className="login-form-group">

@@ -165,12 +165,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                   ))}
 
                   {myClubs.length === 0 && !loading && (
-                    <div
-                      className="no-clubs"
-                      style={
-                        user.type === "sponsor" ? { marginBottom: "10px" } : {}
-                      }
-                    >
+                    <div className="no-clubs">
                       <p className="no-clubs-text">
                         {user.type === "sponsor"
                           ? "You have no clubs. Create one by clicking the + button below."
@@ -184,7 +179,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                     <div
                       onClick={newClub}
                       className="club-card club-card-new"
-                      style={{ backgroundColor: "#EFEFEF" }}
+                      style={{ backgroundColor: "#EFEFEF", marginTop: "20px" }}
                     >
                       <span>+</span>
                     </div>
