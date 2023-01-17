@@ -71,10 +71,6 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     }
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
   if (clubForm) {
     return (
       <NewClub
@@ -115,55 +111,16 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
               {user.type === "admin" ? "All Clubs" : "My Clubs"}
             </h1>
             <section className="my-clubs">
-              {myClubs.map((club, i) => (
-                <div className="club-card" key={i}>
-                  <div
-                    className="club-card-color"
-                    style={{ backgroundColor: getColor(i) }}
-                  >
-                    <div className="icon"></div>
-                  </div>
-                  <div className="club-card-inner">
-                    <div className="club-card-upper">
-                      <h1>{club.name}</h1>
-                      <h4>
-                        Sponsor: {club.sponsors[0].firstName}{" "}
-                        {club.sponsors[0].lastName}
-                      </h4>
-                    </div>
-                    <div className="club-card-lower">
-                      <div className="club-card-lower-left">
-                        <p>{club.members.length} members</p>
-                        <p>Rm. {club.room}</p>
-                      </div>
-                      <div className="club-card-lower-right">
-                        <Link to={`/${user.school.link}/${club._id}`}>
-                          <button>Go to club</button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {user.type === "sponsor" ? (
-                <div
-                  onClick={newClub}
-                  className="club-card club-card-new"
-                  style={{ backgroundColor: "#EFEFEF" }}
-                >
-                  <span>&#x2b;</span>
-                </div>
-              ) : null}
-            </section>
-            {user.type !== "sponsor" ? (
-              <>
-                <h1 className="school-clubs-title">
-                  {user.type === "admin" ? "Pending Clubs" : "Other Clubs"}
-                </h1>
-                <section className="other-clubs">
-                  {otherClubs.map((club, i) => (
+              {loading ? (
+                <Loading insideWrapper={false} />
+              ) : (
+                <>
+                  {myClubs.map((club, i) => (
                     <div className="club-card" key={i}>
-                      <div className="club-card-color">
+                      <div
+                        className="club-card-color"
+                        style={{ backgroundColor: getColor(i) }}
+                      >
                         <div className="icon"></div>
                       </div>
                       <div className="club-card-inner">
@@ -180,28 +137,79 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                             <p>Rm. {club.room}</p>
                           </div>
                           <div className="club-card-lower-right">
-                            <div
-                              className="member-yes-no"
-                              style={{ padding: "0px" }}
-                            >
-                              <div
-                                onClick={() => clubDecision(club, false)}
-                                className="member-no"
-                              >
-                                &#10005;
-                              </div>
-                              <div
-                                onClick={() => clubDecision(club, true)}
-                                className="member-yes"
-                              >
-                                &#x2713;
-                              </div>
-                            </div>
+                            <Link to={`/${user.school.link}/${club._id}`}>
+                              <button>Go to club</button>
+                            </Link>
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
+                </>
+              )}
+              {user.type === "sponsor" ? (
+                <div
+                  onClick={newClub}
+                  className="club-card club-card-new"
+                  style={{ backgroundColor: "#EFEFEF" }}
+                >
+                  <span>&#x2b;</span>
+                </div>
+              ) : null}
+            </section>
+            {user.type !== "sponsor" ? (
+              <>
+                <h1 className="school-clubs-title">
+                  {user.type === "admin" ? "Pending Clubs" : "Other Clubs"}
+                </h1>
+                <section className="other-clubs">
+                  {loading ? (
+                    <Loading insideWrapper={false} />
+                  ) : (
+                    <>
+                      {otherClubs.map((club, i) => (
+                        <div className="club-card" key={i}>
+                          <div className="club-card-color">
+                            <div className="icon"></div>
+                          </div>
+                          <div className="club-card-inner">
+                            <div className="club-card-upper">
+                              <h1>{club.name}</h1>
+                              <h4>
+                                Sponsor: {club.sponsors[0].firstName}{" "}
+                                {club.sponsors[0].lastName}
+                              </h4>
+                            </div>
+                            <div className="club-card-lower">
+                              <div className="club-card-lower-left">
+                                <p>{club.members.length} members</p>
+                                <p>Rm. {club.room}</p>
+                              </div>
+                              <div className="club-card-lower-right">
+                                <div
+                                  className="member-yes-no"
+                                  style={{ padding: "0px" }}
+                                >
+                                  <div
+                                    onClick={() => clubDecision(club, false)}
+                                    className="member-no"
+                                  >
+                                    &#10005;
+                                  </div>
+                                  <div
+                                    onClick={() => clubDecision(club, true)}
+                                    className="member-yes"
+                                  >
+                                    &#x2713;
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </section>
               </>
             ) : null}
