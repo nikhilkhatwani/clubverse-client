@@ -85,7 +85,7 @@ export default function App() {
               JSON.stringify(user) !== "{}" ? (
                 <Navigate replace to={`/${user.school.link}`} />
               ) : (
-                <LoginPage />
+                <LoginPage setToken={setToken} setUser={setUser} />
               )
             }
           />
@@ -113,7 +113,12 @@ export default function App() {
             path="/:schoolLink"
             element={
               JSON.stringify(user) !== "{}" ? (
-                <SchoolPage user={user} setUser={setUser} setToken={setToken} />
+                <SchoolPage
+                  user={user}
+                  setUser={setUser}
+                  setToken={setToken}
+                  token={token}
+                />
               ) : (
                 <Navigate replace to="/login" />
               )

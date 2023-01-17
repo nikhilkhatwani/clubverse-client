@@ -10,3 +10,4 @@ export { default as ClubSettingsPage } from "./ClubSettingsPage";
 export { default as UserSettingsPage } from "./UserSettingsPage";
 export { default as SchoolSettingsPage } from "./SchoolSettingsPage";
 export { default as NotFoundPage } from "./NotFoundPage";
+export { default as NewClub } from "./NewClub";

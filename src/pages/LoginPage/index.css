@@ -1,0 +1,167 @@
+:root {
+  --primary-color: #004e78;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Chivo&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Chivo", sans-serif;
+}
+
+body {
+}
+
+.login-body {
+  height: 100vh;
+  color: white;
+  width: 100vw;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.login-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+.login-logo {
+  position: relative;
+  min-height: 157px;
+  min-width: 258px;
+}
+
+.login-logo img {
+  height: 157px;
+  width: 258px;
+}
+
+.login-img-ylw {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.login-img-blue {
+  position: absolute;
+  bottom: 2.5px;
+  right: 1.5px;
+}
+
+.login-text {
+  width: 400px;
+}
+
+.login-form {
+  width: 680px;
+  padding: 20px;
+  border: 3px solid white;
+  border-radius: 15px;
+  overflow-y: scroll;
+}
+
+.login-form::-webkit-scrollbar {
+  display: none;
+}
+
+.login-form {
+  -ms-verflow-style: none;
+  scrollbar-width: none;
+}
+
+.login-form h2 {
+  font-weight: 200;
+  font-size: 32px;
+  font-style: normal;
+  line-height: 38px;
+  text-align: center;
+}
+
+.login-form p {
+  font-weight: 100;
+  text-align: center;
+  padding: 10px;
+}
+
+.login-form p a {
+  text-decoration: underline;
+}
+
+.login-form p a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+  padding-top: 30px;
+  min-height: 80%;
+}
+
+.login-form-group input,
+.login-form-group select,
+.login-form-group button {
+  width: 80%;
+}
+
+.login-form-group select {
+  height: 60px;
+  outline: none;
+  border: 1px solid white;
+  background: none;
+  border-radius: 10px;
+  color: white;
+  padding: 15px;
+}
+
+.login-form-group select option {
+  height: 60px;
+  color: black;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+option[disabled] {
+  color: #c4c4c4 !important;
+}
+
+::placeholder {
+  color: white;
+}
+
+.login-form-group input {
+  height: 60px;
+  outline: none;
+  border: 1px solid white;
+  background: none;
+  border-radius: 10px;
+  color: white;
+  padding: 15px;
+}
+
+.login-form-group button {
+  height: 60px;
+  outline: none;
+  border: 1px solid white;
+  background: none;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 1.1em;
+  color: var(--primary-color);
+  padding: 15px;
+}
+
+button:hover {
+  cursor: pointer;
+}

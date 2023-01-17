@@ -57,3 +57,16 @@ export const schoolGetClubs = async (userId) => {
 
   return response.json();
 };
+
+export const getSchools = async () => {
+  let url = `${API_URL}/schools/get-schools`;
+
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+};

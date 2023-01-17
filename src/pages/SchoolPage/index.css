@@ -76,6 +76,7 @@
   border: 1px solid lightgray;
   transition: border 0.2s;
   color: lightgray;
+  cursor: pointer;
 }
 
 .nav-login a {
@@ -99,6 +100,7 @@
   justify-content: right;
   padding: 5px 0px;
   gap: 15px;
+  font-weight: 600;
 }
 
 .member-yes-no div {
@@ -144,6 +146,10 @@
   color: var(--primary-color);
 }
 
+.my-clubs {
+  margin-bottom: 30px;
+}
+
 .my-clubs,
 .other-clubs {
   display: grid;
@@ -171,6 +177,29 @@
   width: 326px;
   border-radius: 15px;
   overflow: hidden;
+}
+
+.club-card-new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.club-card-new span {
+  font-size: 100px;
+  height: 76px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  line-height: 0 !important;
+  margin-bottom: 20px;
+}
+
+.club-card-new:hover {
+  cursor: pointer;
+  background-color: #cecece !important;
+  transition: background-color 0.2s;
 }
 
 .club-card-color {
@@ -291,4 +320,87 @@ footer a {
   width: 102px;
   object-fit: cover;
   object-position: center;
+}
+
+@media screen and (max-width: 977px) {
+  .school-clubs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .my-clubs,
+  .other-clubs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    overflow-x: hidden;
+  }
+
+  .school-clubs-title {
+    text-align: center;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-wrapper {
+    height: 125px;
+  }
+
+  .nav-option-home {
+    display: none !important;
+  }
+
+  .nav div h1 {
+    font-size: 30px;
+    line-height: 36px;
+    margin-bottom: 10px;
+  }
+
+  .nav-login {
+    border: 1px solid white;
+    border-radius: 15px;
+    width: 10px !important;
+    padding: 15px;
+    min-width: 185px;
+  }
+}
+
+@media screen and (max-width: 699px) {
+  .my-clubs,
+  .other-clubs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .school-clubs-title {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .club-card {
+    width: 250px;
+  }
+
+  .nav-wrapper .nav {
+    margin: 0;
+  }
+
+  .club-card .club-card-inner .club-card-upper h1 {
+    font-size: 20px;
+  }
+
+  .club-card .club-card-inner .club-card-upper h4 {
+    font-size: 12px;
+  }
 }
