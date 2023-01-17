@@ -324,11 +324,8 @@ footer a {
 }
 
 @media screen and (max-width: 768px) {
-  .my-clubs,
-  .other-clubs {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
+  .no-clubs {
+    text-align: center;
   }
 
   .school-clubs-title {
@@ -352,6 +349,7 @@ footer a {
     padding-top: 0px;
   }
 
+  .no-clubs,
   .club-card {
     width: 315px;
   }
@@ -377,9 +375,7 @@ footer a {
     padding: 15px;
     min-width: 185px;
   }
-}
 
-@media screen and (max-width: 699px) {
   .my-clubs,
   .other-clubs {
     display: flex;
@@ -393,7 +389,8 @@ footer a {
 }
 
 @media screen and (max-width: 400px) {
-  .club-card {
+  .club-card,
+  .no-clubs {
     width: 250px;
   }
 

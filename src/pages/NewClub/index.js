@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { handleKeyDown } from "../../utils/api";
 import { clubCreate } from "../../utils/api/calls/clubs";
 
 import "./index.css";
@@ -88,6 +89,7 @@ export default function NewClub({ user, setUser, setToken, token }) {
             placeholder="Club name"
             name="name"
             onChange={onChange}
+            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
           />
           <input
             type="text"
@@ -95,6 +97,7 @@ export default function NewClub({ user, setUser, setToken, token }) {
             placeholder="Club Description"
             name="description"
             onChange={onChange}
+            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
           />
           <input
             type="text"
@@ -102,6 +105,7 @@ export default function NewClub({ user, setUser, setToken, token }) {
             placeholder="Club Room #"
             name="room"
             onChange={onChange}
+            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
           />
           <button
             disabled={isButtonLoading}

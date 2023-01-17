@@ -7,7 +7,7 @@ import { userLogout } from "../../utils/api/calls/users";
 import { NewClub } from "../";
 
 import "./index.css";
-import { clubApprove } from "../../utils/api/calls/clubs";
+import { clubApprove, clubJoin } from "../../utils/api/calls/clubs";
 import { getColor } from "../../utils/api/colors";
 
 export default function SchoolPage({ user, setUser, setToken, token }) {
@@ -15,7 +15,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
 
   const [myClubs, setMyClubs] = useState([]);
   const [otherClubs, setOtherClubs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [clubForm, setClubForm] = useState(false);
   const [error, setError] = useState("");
 
@@ -71,6 +71,19 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     }
   };
 
+  const joinClub = async (club) => {
+    let response = await clubJoin(club._id, user._id);
+    if (response.success) {
+      setOtherClubs((prev) => prev.filter((c) => c._id !== club._id));
+
+      let newClub = response.club;
+      newClub.sponsors = club.sponsors;
+      setOtherClubs((prev) => [...prev, newClub]);
+    } else {
+      setError(response.message);
+    }
+  };
+
   if (clubForm) {
     return (
       <NewClub
@@ -97,7 +110,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
             <div className="nav-login">
               <a onClick={logout}>
                 <img src="/assets/default.png" />
-                {user.firstName}
+                {user.firstName} {user.lastName !== "" ? user.lastName : null}
               </a>
             </div>
           </div>
@@ -114,7 +127,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
               {loading ? (
                 <Loading insideWrapper={false} />
               ) : (
-                <>
+                <div className="my-clubs-inner">
                   {myClubs.map((club, i) => (
                     <div className="club-card" key={i}>
                       <div
@@ -138,25 +151,48 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                           </div>
                           <div className="club-card-lower-right">
                             <Link to={`/${user.school.link}/${club._id}`}>
-                              <button>Go to club</button>
+                              <button>
+                                {user.type === "admin" ||
+                                user.type === "sponsor"
+                                  ? "Manage"
+                                  : "Go to club"}
+                              </button>
                             </Link>
                           </div>
                         </div>
                       </div>
                     </div>
                   ))}
-                </>
-              )}
-              {user.type === "sponsor" ? (
-                <div
-                  onClick={newClub}
-                  className="club-card club-card-new"
-                  style={{ backgroundColor: "#EFEFEF" }}
-                >
-                  <span>&#x2b;</span>
+
+                  {myClubs.length === 0 && !loading && (
+                    <div
+                      className="no-clubs"
+                      style={
+                        user.type === "sponsor" ? { marginBottom: "10px" } : {}
+                      }
+                    >
+                      <p className="no-clubs-text">
+                        {user.type === "sponsor"
+                          ? "You have no clubs. Create one by clicking the + button below."
+                          : user.type === "admin"
+                          ? "No clubs created yet. You can approve any pending clubs below."
+                          : "You are not part of any clubs. Join one by looking at the clubs below."}
+                      </p>
+                    </div>
+                  )}
+                  {user.type === "sponsor" ? (
+                    <div
+                      onClick={newClub}
+                      className="club-card club-card-new"
+                      style={{ backgroundColor: "#EFEFEF" }}
+                    >
+                      <span>+</span>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              )}
             </section>
+
             {user.type !== "sponsor" ? (
               <>
                 <h1 className="school-clubs-title">
@@ -167,47 +203,86 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                     <Loading insideWrapper={false} />
                   ) : (
                     <>
-                      {otherClubs.map((club, i) => (
-                        <div className="club-card" key={i}>
-                          <div className="club-card-color">
-                            <div className="icon"></div>
-                          </div>
-                          <div className="club-card-inner">
-                            <div className="club-card-upper">
-                              <h1>{club.name}</h1>
-                              <h4>
-                                Sponsor: {club.sponsors[0].firstName}{" "}
-                                {club.sponsors[0].lastName}
-                              </h4>
+                      {otherClubs.map((club, i) => {
+                        return (
+                          <div className="club-card" key={i}>
+                            <div className="club-card-color">
+                              <div className="icon"></div>
                             </div>
-                            <div className="club-card-lower">
-                              <div className="club-card-lower-left">
-                                <p>{club.members.length} members</p>
-                                <p>Rm. {club.room}</p>
+                            <div className="club-card-inner">
+                              <div className="club-card-upper">
+                                <h1>{club.name}</h1>
+                                <h4>
+                                  Sponsor: {club.sponsors[0].firstName}{" "}
+                                  {club.sponsors[0].lastName}
+                                </h4>
                               </div>
-                              <div className="club-card-lower-right">
-                                <div
-                                  className="member-yes-no"
-                                  style={{ padding: "0px" }}
-                                >
-                                  <div
-                                    onClick={() => clubDecision(club, false)}
-                                    className="member-no"
-                                  >
-                                    &#10005;
-                                  </div>
-                                  <div
-                                    onClick={() => clubDecision(club, true)}
-                                    className="member-yes"
-                                  >
-                                    &#x2713;
-                                  </div>
+                              <div className="club-card-lower">
+                                <div className="club-card-lower-left">
+                                  <p>{club.members.length} members</p>
+                                  <p>Rm. {club.room}</p>
                                 </div>
+                                {user.type === "admin" ? (
+                                  <div className="club-card-lower-right">
+                                    <div
+                                      className="member-yes-no"
+                                      style={{ padding: "0px" }}
+                                    >
+                                      <div
+                                        onClick={() =>
+                                          clubDecision(club, false)
+                                        }
+                                        className="member-no"
+                                      >
+                                        &#10005;
+                                      </div>
+                                      <div
+                                        onClick={() => clubDecision(club, true)}
+                                        className="member-yes"
+                                      >
+                                        &#x2713;
+                                      </div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="club-card-lower-right">
+                                    <button
+                                      onClick={() => joinClub(club)}
+                                      disabled={club.requests.includes(
+                                        user._id
+                                      )}
+                                      style={
+                                        club.requests.includes(user._id)
+                                          ? {
+                                              backgroundColor: "#757575",
+                                              cursor: "not-allowed",
+                                            }
+                                          : { backgroundColor: "#004e78" }
+                                      }
+                                    >
+                                      {club.requests.includes(user._id)
+                                        ? "Requested"
+                                        : "Join Club"}
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
+
+                      {otherClubs.length === 0 &&
+                        !loading &&
+                        user.type !== "sponsor" && (
+                          <div className="no-clubs">
+                            <p className="no-clubs-text">
+                              {user.type === "admin"
+                                ? "There are no pending clubs to approve."
+                                : "There are no other clubs to join. Talk to your sponsor to create one."}
+                            </p>
+                          </div>
+                        )}
                     </>
                   )}
                 </section>

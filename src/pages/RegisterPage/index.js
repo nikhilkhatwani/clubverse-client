@@ -14,6 +14,7 @@ import * as XLSX from "xlsx/xlsx.mjs";
 import "./index.css";
 import { states } from "../../utils/api/states";
 import { userLogin } from "../../utils/api/calls/users";
+import { handleKeyDown } from "../../utils/api";
 
 export default function RegisterPage({ setToken, setUser }) {
   const [step, setStep] = useState(1);
@@ -221,6 +222,7 @@ export default function RegisterPage({ setToken, setUser }) {
                 placeholder="School name"
                 name="schoolName"
                 onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
               />
               <input
                 type="text"
@@ -228,6 +230,7 @@ export default function RegisterPage({ setToken, setUser }) {
                 placeholder="School phone number"
                 name="phoneNumber"
                 onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
               />
               <input
                 value={formData.schoolEmail}
@@ -235,6 +238,7 @@ export default function RegisterPage({ setToken, setUser }) {
                 placeholder="School email"
                 name="schoolEmail"
                 onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
               />
               <select
                 value={formData.schoolState}
@@ -264,6 +268,7 @@ export default function RegisterPage({ setToken, setUser }) {
                 placeholder="Set admin username"
                 name="username"
                 onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
               />
               <input
                 type="password"
@@ -271,6 +276,7 @@ export default function RegisterPage({ setToken, setUser }) {
                 placeholder="Set admin password"
                 name="password"
                 onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
               />
 
               <button

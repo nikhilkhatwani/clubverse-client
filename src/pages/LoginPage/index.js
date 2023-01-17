@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { handleKeyDown } from "../../utils/api";
 import { getSchools } from "../../utils/api/calls/schools";
 import { userLogin } from "../../utils/api/calls/users";
 
@@ -116,6 +117,7 @@ export default function LoginPage({ setToken, setUser }) {
             placeholder="Username"
             name="username"
             onChange={onChange}
+            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
           />
           <input
             type="password"
@@ -123,6 +125,7 @@ export default function LoginPage({ setToken, setUser }) {
             placeholder="Password"
             name="password"
             onChange={onChange}
+            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
           />
 
           <button
