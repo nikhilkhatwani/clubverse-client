@@ -127,7 +127,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
               {loading ? (
                 <Loading insideWrapper={false} />
               ) : (
-                <div className="my-clubs-inner">
+                <>
                   {myClubs.map((club, i) => (
                     <div className="club-card" key={i}>
                       <div
@@ -179,12 +179,12 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                     <div
                       onClick={newClub}
                       className="club-card club-card-new"
-                      style={{ backgroundColor: "#EFEFEF", marginTop: "20px" }}
+                      style={{ backgroundColor: "#EFEFEF" }}
                     >
                       <span>+</span>
                     </div>
                   ) : null}
-                </div>
+                </>
               )}
             </section>
 
