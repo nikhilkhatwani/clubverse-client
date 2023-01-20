@@ -45,6 +45,13 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     setClubForm(true);
   };
 
+  const goToClub = (e, clubId) => {
+    e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+
+    navigate(`/${user.school.link}/${clubId}`);
+  };
+
   const logout = async () => {
     setLoading(true);
     let response = await userLogout(token);
@@ -71,7 +78,10 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     }
   };
 
-  const joinClub = async (club) => {
+  const joinClub = async (e, club) => {
+    e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+
     let response = await clubJoin(club._id, user._id);
     if (response.success) {
       setOtherClubs((prev) => prev.filter((c) => c._id !== club._id));
@@ -151,7 +161,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                           </div>
                           <div className="club-card-lower-right">
                             <Link to={`/${user.school.link}/${club._id}`}>
-                              <button>
+                              <button onClick={(e) => goToClub(e, club._id)}>
                                 {user.type === "admin" ||
                                 user.type === "sponsor"
                                   ? "Manage"
@@ -200,7 +210,19 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                     <>
                       {otherClubs.map((club, i) => {
                         return (
-                          <div className="club-card" key={i}>
+                          <div
+                            className={
+                              user.type === "student"
+                                ? "club-card club-card-student"
+                                : "club-card"
+                            }
+                            onClick={
+                              user.type === "student"
+                                ? (e) => goToClub(e, club._id)
+                                : null
+                            }
+                            key={i}
+                          >
                             <div className="club-card-color">
                               <div className="icon"></div>
                             </div>
@@ -242,7 +264,7 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                                 ) : (
                                   <div className="club-card-lower-right">
                                     <button
-                                      onClick={() => joinClub(club)}
+                                      onClick={(e) => joinClub(e, club)}
                                       disabled={club.requests.includes(
                                         user._id
                                       )}

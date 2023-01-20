@@ -1,5 +1,18 @@
 const { API_URL } = require("../index");
 
+export const getClub = async (clubId) => {
+  let url = `${API_URL}/clubs/getClub?clubId=${clubId}`;
+
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+};
+
 export const clubCreate = async (club) => {
   const { name, description, sponsorId, room } = club;
 

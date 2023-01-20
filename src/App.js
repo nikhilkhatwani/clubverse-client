@@ -15,10 +15,6 @@ import {
   RegisterPage,
   SchoolPage,
   ClubPage,
-  ClubMemberPage,
-  ClubAttendancePage,
-  ClubDuesPage,
-  ClubSettingsPage,
   UserSettingsPage,
   SchoolSettingsPage,
   NotFoundPage,
@@ -133,67 +129,12 @@ export default function App() {
             path="/:schoolLink/:clubId"
             element={
               JSON.stringify(user) !== "{}" ? (
-                <ClubPage />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-
-          {/* Club Member Page */}
-          {/* NOTE: Need to check if this is user school in component */}
-          {/* NOTE: User needs to be a member, officer, sponsor, or admin of club. Check in component so views can be rendered */}
-          <Route
-            exact
-            path="/:schoolLink/:clubId/members"
-            element={
-              JSON.stringify(user) !== "{}" ? (
-                <ClubMemberPage />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-
-          {/* Club Attendance Page */}
-          {/* NOTE: Need to check if this is user school in component */}
-          {/* NOTE: User needs to be an officer, sponsor, or admin of club. Check in component so views can be rendered */}
-          <Route
-            exact
-            path="/:schoolLink/:clubId/attendance"
-            element={
-              JSON.stringify(user) !== "{}" ? (
-                <ClubAttendancePage />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-
-          {/* Club Dues Page */}
-          {/* NOTE: Need to check if this is user school in component */}
-          {/* NOTE: User needs to be an officer, sponsor, or admin of club. Check in component so views can be rendered */}
-          <Route
-            exact
-            path="/:schoolLink/:clubId/dues"
-            element={
-              JSON.stringify(user) !== "{}" ? (
-                <ClubDuesPage />
-              ) : (
-                <Navigate replace to="/login" />
-              )
-            }
-          />
-
-          {/* Club Settings Page */}
-          {/* NOTE: Need to check if this is user school in component */}
-          {/* NOTE: User needs to be a member, officer, sponsor, or admin of club. Check in component so views can be rendered */}
-          <Route
-            exact
-            path="/:schoolLink/:clubId/settings"
-            element={
-              JSON.stringify(user) !== "{}" ? (
-                <ClubSettingsPage />
+                <ClubPage
+                  user={user}
+                  setUser={setUser}
+                  token={token}
+                  setToken={setToken}
+                />
               ) : (
                 <Navigate replace to="/login" />
               )
