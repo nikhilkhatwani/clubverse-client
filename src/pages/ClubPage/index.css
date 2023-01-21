@@ -204,7 +204,6 @@ aside {
 .important-dates h1,
 .filter h1 {
   color: var(--primary-color);
-  padding: 5px;
 }
 
 .dates {
@@ -368,7 +367,6 @@ aside {
 
 .members h1 {
   color: var(--primary-color);
-  padding: 5px;
   font-size: 25px;
 }
 
@@ -438,7 +436,7 @@ aside {
   padding: 10px 0px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
 }
 
 .club-members-page section h2,
@@ -542,7 +540,7 @@ aside {
 .person {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   gap: 10px;
 }
 
@@ -609,7 +607,6 @@ aside {
   display: flex;
   justify-content: right;
   align-items: center;
-  padding: 5px 0;
   gap: 15px;
 }
 
@@ -720,10 +717,6 @@ aside {
   transition: background-color 0.2s;
 }
 
-select {
-  font-weight: 500;
-}
-
 .meeting select option {
   height: 60px;
   color: black;
@@ -735,4 +728,359 @@ option[disabled] {
   color: #c4c4c4 !important;
 }
 
-/* dues page media query */
+.club-header-right-hidden {
+  display: none;
+}
+
+@media screen and (max-width: 1030px) {
+  .club-header-right-hidden {
+    display: flex;
+    flex-direction: column;
+    color: #757575;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+
+  .club-header-right-hidden p {
+    font-size: 0.8em;
+  }
+
+  .club-header-link {
+    font-size: 0.8em;
+  }
+
+  .club-header-left h2 {
+    font-size: 1.5em;
+  }
+
+  .club-header {
+    /* flex-direction: column; */
+  }
+
+  .club-header-right {
+    display: none;
+  }
+
+  .club-header-wrapper {
+    height: 150px;
+  }
+
+  .announcements h3 {
+    font-size: 0.8em;
+  }
+
+  .description h1,
+  .important-dates h1,
+  .filter h1,
+  .members h1 {
+    font-size: 1.1em;
+  }
+
+  .main-member-list .member {
+    gap: 5px;
+  }
+
+  .main-member-list .member p {
+    font-size: 0.6em;
+  }
+
+  .main-member-list .member img {
+    height: 15px;
+    width: 15px;
+  }
+
+  .description p,
+  .important-dates p,
+  .filter p {
+    font-size: 0.7em;
+  }
+
+  .club-main {
+    height: auto;
+  }
+
+  .club-members-page section h2,
+  .club-attendance-page section h2,
+  .club-dues-page section h2 {
+    font-size: 1.1em;
+  }
+
+  .person h4 {
+    font-size: 12px;
+  }
+
+  .person img {
+    height: 25px;
+    width: 25px;
+  }
+
+  .person-wrapper {
+    padding: 5px;
+  }
+
+  .attendance-yes-no div {
+    height: 25px;
+    width: 25px;
+  }
+
+  .meeting select {
+    /* height: 25px; */
+    padding: 7px;
+    font-size: 0.8em;
+  }
+
+  .create-meeting {
+    padding: 7px;
+    font-size: 0.8em;
+  }
+
+  .member-dropdown-left div {
+    font-size: 0.7em;
+  }
+
+  .button-promote-demote,
+  .button-remove {
+    font-size: 0.6em;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .club-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .club-header {
+    padding: 20px;
+  }
+
+  .description h1,
+  .important-dates h1,
+  .filter h1,
+  .members h1 {
+    font-size: 1em;
+  }
+
+  .description p,
+  .important-dates p,
+  .filter p {
+    font-size: 0.6em;
+  }
+
+  .club-header-right-hidden p {
+    font-size: 0.75em;
+  }
+
+  .club-header-link {
+    font-size: 0.65em;
+  }
+
+  .club-header-left h2 {
+    font-size: 1.4em;
+  }
+
+  .club-header-left .club-header-nav {
+    gap: 10px;
+  }
+
+  .club-header-wrapper {
+    height: 140px;
+  }
+
+  .description,
+  .important-dates,
+  .filter,
+  .members {
+    padding: 12px;
+  }
+
+  /* */
+  .club-members-page section h2,
+  .club-attendance-page section h2,
+  .club-dues-page section h2 {
+    font-size: 1em;
+  }
+  /* 
+  .person h4 {
+    font-size: 12px;
+  }
+
+  .person img {
+    height: 25px;
+    width: 25px;
+  } */
+
+  .attendance-yes-no div {
+    height: 25px;
+    width: 25px;
+  }
+
+  .meeting select {
+    /* height: 25px; */
+    padding: 7px;
+    font-size: 0.7em;
+  }
+
+  .create-meeting {
+    padding: 7px;
+    font-size: 0.7em;
+  }
+
+  .member-dropdown-left div {
+    font-size: 0.6em;
+  }
+
+  .meeting {
+    justify-content: center;
+  }
+
+  .club-members-page,
+  .club-attendance-page,
+  .club-dues-page {
+    padding: 20px 50px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .members {
+    display: none;
+  }
+
+  /* .fl-r {
+    display: block !important;
+  }
+
+  .announcements-div aside .filter {
+    display: none;
+  } */
+}
+
+@media screen and (max-width: 560px) {
+  .description h1,
+  .important-dates h1,
+  .filter h1,
+  .members h1 {
+    font-size: 0.9em;
+  }
+
+  .description p,
+  .important-dates p,
+  .filter p {
+    font-size: 0.5em;
+  }
+
+  .announcements {
+    padding-bottom: 30px;
+  }
+
+  aside {
+    grid-column-start: 1;
+    grid-column-end: 20;
+    grid-row-start: 4;
+    grid-row-end: 8;
+  }
+  .announcements {
+    grid-column-start: 1;
+    grid-column-end: 20;
+    grid-row-start: 1;
+    grid-row-end: 4;
+  }
+
+  .club-main {
+    gap: 0px;
+  }
+
+  .announcements {
+    overflow-y: hidden;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .club-header-left .club-header-nav {
+    gap: 5px;
+    flex-direction: column;
+  }
+
+  .club-header-wrapper {
+    height: auto;
+  }
+
+  .club-header {
+    justify-content: center;
+    margin: 0;
+  }
+
+  .nav-wrapper .nav h1 {
+    font-size: 1.5em;
+  }
+
+  .nav-wrapper .nav .nav-login {
+    margin: 0px;
+  }
+
+  .nav-wrapper .nav .nav-login a {
+    font-size: 0.7em;
+  }
+
+  .nav-wrapper .nav .nav-login img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .attendance-yes-no div {
+    height: 20px;
+    width: 20px;
+  }
+
+  .attendance-neutral,
+  .attendance-yes,
+  .attendance-no {
+    font-size: 12px;
+  }
+
+  .person h4 {
+    font-size: 10px;
+  }
+
+  .person img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .meeting {
+    flex-direction: column;
+  }
+
+  .create-meeting,
+  #meeting {
+    width: 200px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 356px) {
+  .member-dropdown {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .member-dropdown-right {
+    margin-top: 10px;
+    gap: 5px;
+  }
+
+  .person-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pw {
+    flex-direction: row;
+  }
+
+  .attendance-yes-no {
+    margin-top: 10px;
+    justify-content: flex-start;
+  }
+}

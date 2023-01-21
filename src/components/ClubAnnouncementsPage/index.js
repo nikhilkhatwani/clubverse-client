@@ -157,6 +157,58 @@ export default function ClubAnnouncementsPage({
         </div>
       </div>
 
+      {foundUser !== undefined || hasPermissions ? (
+        <div className="filter right fl-r" style={{ display: "none" }}>
+          <h1>Filter</h1>
+          <p>Sort by Relevance</p>
+          <select name="" id=""></select>
+          <p>Sort by Tag</p>
+          <select name="" id=""></select>
+          <p>Sort by User</p>
+          <select name="" id=""></select>
+        </div>
+      ) : (
+        <div className="filter right join fl-r" style={{ display: "none" }}>
+          <h1>
+            {club.requests.indexOf(
+              club.requests.find((u) => u._id == user._id)
+            ) !== -1
+              ? "Pending Join Request"
+              : "Join"}
+          </h1>
+          <p>
+            {club.requests.indexOf(
+              club.requests.find((u) => u._id == user._id)
+            ) !== -1
+              ? "Your join request is pending"
+              : "Interested in joining this club? Request to join the club by clicking the button below."}
+          </p>
+          {
+            <button
+              onClick={joinClub}
+              style={
+                club.requests.indexOf(
+                  club.requests.find((u) => u._id == user._id)
+                ) !== -1
+                  ? {
+                      backgroundColor: "#757575",
+                      cursor: "not-allowed",
+                      color: "white",
+                      border: "none",
+                    }
+                  : {}
+              }
+            >
+              {club.requests.indexOf(
+                club.requests.find((u) => u._id == user._id)
+              ) !== -1
+                ? "Requested"
+                : "Join Club"}
+            </button>
+          }
+        </div>
+      )}
+
       {/* <div className="filter right" style={{ display: "none" }}>
         <h1>Filter</h1>
         <p>Sort by Relevance</p>

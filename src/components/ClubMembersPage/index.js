@@ -204,7 +204,7 @@ export default function ClubMembersPage({
         {sponsors.map((sponsor, i) => (
           <>
             <div className="member-page-member" key={i}>
-              <div className="person-wrapper">
+              <div className="person-wrapper pw">
                 <div className="person">
                   <img src="/assets/default.png" alt="" />
                   <h4>
@@ -240,7 +240,7 @@ export default function ClubMembersPage({
         <h2>Officers ({officers.length})</h2>
         {officers.map((officer, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person-wrapper">
+            <div className="person-wrapper pw">
               <div className="person">
                 <img src="/assets/default.png" alt="" />
                 <h4>
@@ -306,7 +306,7 @@ export default function ClubMembersPage({
         <h2>Members ({members.length})</h2>
         {members.map((member, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person-wrapper">
+            <div className="person-wrapper pw">
               <div className="person">
                 <img src="/assets/default.png" alt="" />
                 <h4>
@@ -373,7 +373,7 @@ export default function ClubMembersPage({
           <h2>Requests ({requests.length})</h2>
           {requests.map((request, i) => (
             <div className="member-page-member" key={i}>
-              <div className="person-wrapper">
+              <div className="person-wrapper pw">
                 <div className="person">
                   <img src="/assets/default.png" alt="" />
                   <h4>
