@@ -15,7 +15,6 @@ export default function ClubMembersPage({
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    console.log(club);
     let sponsors1 = club.sponsors;
     let officers1 = club.members.filter((m) => m.role === "officer");
     let members1 = club.members.filter((m) => m.role === "member");
@@ -71,7 +70,6 @@ export default function ClubMembersPage({
     if (!hasPermissions) return;
 
     let club1 = { ...club };
-    console.log(club1);
     let request = club1.requests.find(
       (req) => req._id.toString() === requestId
     );

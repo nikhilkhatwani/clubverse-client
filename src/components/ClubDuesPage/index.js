@@ -62,7 +62,6 @@ export default function ClubDuesPage({
     let due = club1.dues.find(
       (thing) => thing.user._id.toString() === updateId
     );
-    console.log(due);
     let ind = club1.dues.indexOf(due);
     due.paid = paidStatus;
     club1.dues[ind] = due;

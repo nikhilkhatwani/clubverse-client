@@ -548,7 +548,7 @@ aside {
 
 .attendance-yes-no .attendance-yes.selected {
   background-color: var(--yes);
-  color: black !important;
+  color: white;
 }
 
 .attendance-yes-no .attendance-neutral.selected {
@@ -558,7 +558,7 @@ aside {
 
 .attendance-yes-no .attendance-no.selected {
   background-color: var(--no);
-  color: black !important;
+  color: white;
 }
 
 .attendance-yes-no .attendance-yes {

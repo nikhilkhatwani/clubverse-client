@@ -13,7 +13,7 @@ export default function ClubAttendancePage({
   const [sponsors, setSponsors] = useState([]);
   const [officers, setOfficers] = useState([]);
   const [members, setMembers] = useState([]);
-  const [meetingIndex, setMeetingIndex] = useState(0);
+  const [meetingIndex, setMeetingIndex] = useState(club.meetings.length - 1); // by default, sets meeting to the most recent
   const [error, setError] = useState("");
 
   const attendanceOperation = async (updateId, attendStatus) => {
