@@ -88,42 +88,44 @@ export default function ClubDuesPage({
         <h2>Sponsors ({sponsors.length})</h2>
         {sponsors.map((sponsor, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {sponsor.user.lastName}, {sponsor.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => duesOperation(sponsor.user._id, "unpaid")}
-                className={
-                  sponsor.paid === "unpaid"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {sponsor.user.lastName}, {sponsor.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => duesOperation(sponsor.user._id, "neutral")}
-                className={
-                  sponsor.paid === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => duesOperation(sponsor.user._id, "paid")}
-                className={
-                  sponsor.paid === "paid"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() => duesOperation(sponsor.user._id, "unpaid")}
+                  className={
+                    sponsor.paid === "unpaid"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() => duesOperation(sponsor.user._id, "neutral")}
+                  className={
+                    sponsor.paid === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() => duesOperation(sponsor.user._id, "paid")}
+                  className={
+                    sponsor.paid === "paid"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>
@@ -133,42 +135,44 @@ export default function ClubDuesPage({
         <h2>Officers ({officers.length})</h2>
         {officers.map((officer, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {officer.user.lastName}, {officer.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => duesOperation(officer.user._id, "unpaid")}
-                className={
-                  officer.paid === "unpaid"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {officer.user.lastName}, {officer.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => duesOperation(officer.user._id, "neutral")}
-                className={
-                  officer.paid === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => duesOperation(officer.user._id, "paid")}
-                className={
-                  officer.paid === "paid"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() => duesOperation(officer.user._id, "unpaid")}
+                  className={
+                    officer.paid === "unpaid"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() => duesOperation(officer.user._id, "neutral")}
+                  className={
+                    officer.paid === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() => duesOperation(officer.user._id, "paid")}
+                  className={
+                    officer.paid === "paid"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>
@@ -178,42 +182,44 @@ export default function ClubDuesPage({
         <h2>Members ({members.length})</h2>
         {members.map((member, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {member.user.lastName}, {member.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => duesOperation(member.user._id, "unpaid")}
-                className={
-                  member.paid === "unpaid"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {member.user.lastName}, {member.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => duesOperation(member.user._id, "neutral")}
-                className={
-                  member.paid === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => duesOperation(member.user._id, "paid")}
-                className={
-                  member.paid === "paid"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() => duesOperation(member.user._id, "unpaid")}
+                  className={
+                    member.paid === "unpaid"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() => duesOperation(member.user._id, "neutral")}
+                  className={
+                    member.paid === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() => duesOperation(member.user._id, "paid")}
+                  className={
+                    member.paid === "paid"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>

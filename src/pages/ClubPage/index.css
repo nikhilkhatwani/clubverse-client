@@ -137,6 +137,9 @@ body {
   transition: border 0.2s;
 }
 
+.member-dropdown {
+}
+
 .club-header-link.selected {
   border: 2px solid var(--primary-color);
   border-radius: 15px;
@@ -450,18 +453,96 @@ aside {
 
 .member-page-member {
   width: 100%;
-  height: 55px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   border: 2px solid var(--primary-color);
   border-radius: 15px;
   padding: 5px 20px;
 }
 
+.member-dropdown {
+  padding: 10px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  animation: slide-down 0.7s;
+  padding: 10px 0px;
+  border-top: 1px solid gray;
+  opacity: 1;
+  height: calc(100% - 10px);
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    height: 0;
+    padding: 0px;
+    overflow: hidden;
+    border-top: 0px;
+  }
+
+  100% {
+    opacity: 1;
+    padding: 10px 0px;
+    height: calc(100% - 10px);
+    border-top: 1px solid gray;
+  }
+}
+
+.button-promote-demote {
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--neutral);
+  color: var(--neutral);
+  font-size: 14px;
+  background-color: white;
+}
+
+.button-promote-demote:hover {
+  cursor: pointer;
+  background-color: var(--neutral);
+  color: white;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button-remove {
+  border-radius: 10px;
+  padding: 5px 10px;
+  border: 1px solid var(--no);
+  color: var(--no);
+  font-size: 14px;
+  background-color: white;
+}
+
+.button-remove:hover {
+  cursor: pointer;
+  background-color: var(--no);
+  color: white;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.member-dropdown-left {
+}
+.member-dropdown-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.person-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px;
+}
+
 .person {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
 }
 
@@ -604,6 +685,17 @@ aside {
   color: var(--neutral);
   font-size: 0.9em;
   padding: 15px;
+}
+
+.ellipsis {
+  margin-bottom: 5px;
+  /* unselectable */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .meeting {

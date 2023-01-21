@@ -134,42 +134,50 @@ export default function ClubAttendancePage({
         <h2>Sponsors ({sponsors.length})</h2>
         {sponsors.map((sponsor, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {sponsor.user.lastName}, {sponsor.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => attendanceOperation(sponsor.user._id, "absent")}
-                className={
-                  sponsor.status === "absent"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {sponsor.user.lastName}, {sponsor.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => attendanceOperation(sponsor.user._id, "neutral")}
-                className={
-                  sponsor.status === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => attendanceOperation(sponsor.user._id, "present")}
-                className={
-                  sponsor.status === "present"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() =>
+                    attendanceOperation(sponsor.user._id, "absent")
+                  }
+                  className={
+                    sponsor.status === "absent"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(sponsor.user._id, "neutral")
+                  }
+                  className={
+                    sponsor.status === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(sponsor.user._id, "present")
+                  }
+                  className={
+                    sponsor.status === "present"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>
@@ -179,42 +187,50 @@ export default function ClubAttendancePage({
         <h2>Officers ({officers.length})</h2>
         {officers.map((officer, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {officer.user.lastName}, {officer.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => attendanceOperation(officer.user._id, "absent")}
-                className={
-                  officer.status === "absent"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {officer.user.lastName}, {officer.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => attendanceOperation(officer.user._id, "neutral")}
-                className={
-                  officer.status === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => attendanceOperation(officer.user._id, "present")}
-                className={
-                  officer.status === "present"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() =>
+                    attendanceOperation(officer.user._id, "absent")
+                  }
+                  className={
+                    officer.status === "absent"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(officer.user._id, "neutral")
+                  }
+                  className={
+                    officer.status === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(officer.user._id, "present")
+                  }
+                  className={
+                    officer.status === "present"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>
@@ -224,42 +240,48 @@ export default function ClubAttendancePage({
         <h2>Members ({members.length})</h2>
         {members.map((member, i) => (
           <div className="member-page-member" key={i}>
-            <div className="person">
-              <img src="/assets/default.png" alt="" />
-              <h4>
-                {member.user.lastName}, {member.user.firstName}
-              </h4>
-            </div>
-            <div className="attendance-yes-no">
-              <div
-                onClick={() => attendanceOperation(member.user._id, "absent")}
-                className={
-                  member.status === "absent"
-                    ? "attendance-no selected"
-                    : "attendance-no"
-                }
-              >
-                &#10005;
+            <div className="person-wrapper">
+              <div className="person">
+                <img src="/assets/default.png" alt="" />
+                <h4>
+                  {member.user.lastName}, {member.user.firstName}
+                </h4>
               </div>
-              <div
-                onClick={() => attendanceOperation(member.user._id, "neutral")}
-                className={
-                  member.status === "neutral"
-                    ? "attendance-neutral selected"
-                    : "attendance-neutral"
-                }
-              >
-                &#9711;
-              </div>
-              <div
-                onClick={() => attendanceOperation(member.user._id, "present")}
-                className={
-                  member.status === "present"
-                    ? "attendance-yes selected"
-                    : "attendance-yes"
-                }
-              >
-                &#x2713;
+              <div className="attendance-yes-no">
+                <div
+                  onClick={() => attendanceOperation(member.user._id, "absent")}
+                  className={
+                    member.status === "absent"
+                      ? "attendance-no selected"
+                      : "attendance-no"
+                  }
+                >
+                  &#10005;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(member.user._id, "neutral")
+                  }
+                  className={
+                    member.status === "neutral"
+                      ? "attendance-neutral selected"
+                      : "attendance-neutral"
+                  }
+                >
+                  &#9711;
+                </div>
+                <div
+                  onClick={() =>
+                    attendanceOperation(member.user._id, "present")
+                  }
+                  className={
+                    member.status === "present"
+                      ? "attendance-yes selected"
+                      : "attendance-yes"
+                  }
+                >
+                  &#x2713;
+                </div>
               </div>
             </div>
           </div>
