@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Loading } from "../../components";
+import { Loading, NewMeetingComponent } from "../../components";
 import { schoolGetClubs } from "../../utils/api/calls/schools";
 import { userLogout } from "../../utils/api/calls/users";
 

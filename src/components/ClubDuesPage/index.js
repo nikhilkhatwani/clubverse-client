@@ -16,7 +16,7 @@ export default function ClubDuesPage({
 
   useEffect(() => {
     let sponsors1 = club.dues.filter((due) => due.user.type === "sponsor");
-    let officers1 = club.dues.filter((due) => due.user.type === "officer");
+    let officers1 = club.members.filter((m) => m.role === "officer");
     let members1 = club.dues.filter((due) => due.user.type === "student");
 
     // sort by last name
@@ -59,6 +59,14 @@ export default function ClubDuesPage({
     if (!hasPermissions) return;
 
     let club1 = { ...club };
+    let due = club1.dues.find(
+      (thing) => thing.user._id.toString() === updateId
+    );
+    console.log(due);
+    let ind = club1.dues.indexOf(due);
+    due.paid = paidStatus;
+    club1.dues[ind] = due;
+    setClub(club1);
 
     const response = await clubUpdateDues(
       club._id,

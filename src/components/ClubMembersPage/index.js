@@ -71,6 +71,22 @@ export default function ClubMembersPage({
     if (!hasPermissions) return;
 
     let club1 = { ...club };
+    console.log(club1);
+    let request = club1.requests.find(
+      (req) => req._id.toString() === requestId
+    );
+    let newRequests = club1.requests.filter(
+      (req) => req._id.toString() !== requestId
+    );
+    let newMembers = members;
+    newMembers.push({
+      user: request,
+      role: "member",
+    });
+    if (approveStatus) {
+      setRequests(newRequests);
+      setMembers(newMembers);
+    }
 
     const response = await clubMemberApproveDeny(
       club._id,

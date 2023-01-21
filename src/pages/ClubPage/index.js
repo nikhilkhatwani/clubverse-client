@@ -17,6 +17,7 @@ export default function ClubPage({ user, setUser }) {
   const [club, setClub] = useState({});
   const [hasPermissions, setHasPermissions] = useState(false);
   const [foundUser, setFoundUser] = useState({});
+  const [newMeetingComponent, setNewMeetingComponent] = useState(false);
 
   const [loading, setLoading] = useState(true);
 

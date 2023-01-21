@@ -595,15 +595,37 @@ aside {
 }
 
 .meeting select {
-  width: 30%;
-  height: 50px;
+  /* width: 30%; */
+  /* height: 50px; */
   outline: none;
   border: 1px solid var(--neutral);
   background: none;
   border-radius: 10px;
   color: var(--neutral);
-  font-size: 1em;
+  font-size: 0.9em;
   padding: 15px;
+}
+
+.meeting {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.create-meeting {
+  border-radius: 10px;
+  padding: 15px;
+  background-color: white;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  outline: none;
+  font-size: 0.9em;
+}
+
+.create-meeting:hover {
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.2s;
 }
 
 select {
