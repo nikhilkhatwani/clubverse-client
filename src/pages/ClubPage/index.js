@@ -14,6 +14,8 @@ import {
 
 export default function ClubPage({ user, setUser }) {
   let current = new URLSearchParams(window.location.search).get("current");
+  current = current ? current : 0;
+  console.log(current);
   current = parseInt(current);
 
   const [isCurrent, setIsCurrent] = useState(
