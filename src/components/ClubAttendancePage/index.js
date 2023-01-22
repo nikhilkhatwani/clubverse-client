@@ -84,6 +84,9 @@ export default function ClubAttendancePage({
           if (found) members1.push(found);
         });
 
+      // ISSUE: Previously a member (no longer in club) doesn't show up in previous meetings that user was part of
+      // CAUSED BY: Lines 78-85; cannot find because user is not in club.members
+
       sponsors1.sort((a, b) => {
         if (a.user.lastName < b.user.lastName) {
           return -1;
@@ -121,8 +124,8 @@ export default function ClubAttendancePage({
   }, [club, meetingIndex]);
 
   return (
-    <div class="club-attendance-page">
-      <div class="meeting">
+    <div className="club-attendance-page">
+      <div className="meeting">
         <select
           name="meeting"
           id="meeting"

@@ -109,6 +109,7 @@ export default function ClubMembersPage({
       setClub(club1);
     } else {
       setSelected(0);
+      console.log(response.message);
     }
   };
 
@@ -312,7 +313,10 @@ export default function ClubMembersPage({
                     {sponsor.lastName}, {sponsor.firstName}
                   </h4>
                 </div>
-                <h4 class="ellipsis" onClick={() => setMemberDropDown(sponsor)}>
+                <h4
+                  className="ellipsis"
+                  onClick={() => setMemberDropDown(sponsor)}
+                >
                   ...
                 </h4>
               </div>
@@ -366,7 +370,7 @@ export default function ClubMembersPage({
                 </h4>
               </div>
               <h4
-                class="ellipsis"
+                className="ellipsis"
                 onClick={() => setMemberDropDown(officer.user)}
               >
                 ...
@@ -432,7 +436,7 @@ export default function ClubMembersPage({
                 </h4>
               </div>
               <h4
-                class="ellipsis"
+                className="ellipsis"
                 onClick={() => setMemberDropDown(member.user)}
               >
                 ...
@@ -498,7 +502,7 @@ export default function ClubMembersPage({
                     {request.lastName}, {request.firstName}
                   </h4>
                 </div>
-                <div class="attendance-yes-no">
+                <div className="attendance-yes-no">
                   <div
                     onClick={() => requestOperation(request._id, false)}
                     className="attendance-no"

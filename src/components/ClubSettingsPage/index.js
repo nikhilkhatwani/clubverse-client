@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { clubEdit } from "../../utils/api/calls/clubs";
+import { clubEdit, clubLeave, clubDelete } from "../../utils/api/calls/clubs";
+import { useNavigate } from "react-router-dom";
 
 export default function ClubSettingsPage({
   user,
@@ -9,6 +10,7 @@ export default function ClubSettingsPage({
   setSelected,
   hasPermissions,
 }) {
+  const navigate = useNavigate();
   const [name, setName] = useState(club.name);
   const [description, setDescription] = useState(club.description);
 
@@ -47,6 +49,21 @@ export default function ClubSettingsPage({
       } else {
         setSelected(0);
       }
+    }
+  };
+
+  const onDeleteClub = async () => {
+    let club1 = { ...club };
+    const response = await clubDelete(club1._id, user._id);
+    navigate(`/${user.school.link}`);
+  };
+  const onLeaveClub = async () => {
+    let club1 = { ...club };
+    const response = await clubLeave(club1._id, user._id);
+    if (response.success) {
+      navigate(`/${user.school.link}`);
+    } else {
+      navigate(`/${user.school.link}`);
     }
   };
 
@@ -207,12 +224,21 @@ export default function ClubSettingsPage({
         </div>
       </section>
       <section className="leave-club">
-        <h2>Leave Club</h2>
+        <h2>{user.type === "sponsor" ? "Delete" : "Leave"} Club</h2>
         <p>
-          By clicking the button below, you will leave this club. You may
-          request to rejoin this club at any time on the dashboard.
+          {" "}
+          {user.type === "sponsor"
+            ? "By clicking the button below, you will delete this club and all of the information inside of it. This action cannot be undone."
+            : "By clicking the button below, you will leave this club. You may request to rejoin this club at any time on the dashboard."}
         </p>
-        <button className="leave-button">Leave</button>
+        <button
+          onClick={
+            user.type === "sponsor" ? () => onDeleteClub() : () => onLeaveClub()
+          }
+          className="leave-button"
+        >
+          {user.type === "sponsor" ? "Delete" : "Leave"}
+        </button>
       </section>
     </div>
   );

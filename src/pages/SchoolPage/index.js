@@ -82,13 +82,22 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
 
+    let club1 = { ...club };
+    club1.requests.push(user._id);
+
+    let foundClub = otherClubs.find((c) => c._id === club._id);
+    let index = otherClubs.indexOf(foundClub);
+
+    let copy = [...otherClubs];
+    copy[index] = club1;
+    setOtherClubs(copy);
     let response = await clubJoin(club._id, user._id);
     if (response.success) {
-      setOtherClubs((prev) => prev.filter((c) => c._id !== club._id));
-
       let newClub = response.club;
       newClub.sponsors = club.sponsors;
-      setOtherClubs((prev) => [...prev, newClub]);
+      copy[index] = newClub;
+      setOtherClubs(copy);
+      setError("");
     } else {
       setError(response.message);
     }
