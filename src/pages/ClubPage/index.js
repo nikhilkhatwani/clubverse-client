@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getClub } from "../../utils/api/calls/clubs";
+import { clubJoin, getClub } from "../../utils/api/calls/clubs";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 
@@ -13,11 +13,22 @@ import {
 } from "../../components";
 
 export default function ClubPage({ user, setUser }) {
-  const [selected, setSelectedIndex] = useState(0);
+  let current = new URLSearchParams(window.location.search).get("current");
+  current = parseInt(current);
+
+  const [isCurrent, setIsCurrent] = useState(
+    current === 0 || current == 1 || current === 4
+      ? true
+      : ((current === 2 || current === 3) && user.type === "admin") ||
+        user.type === "sponsor"
+      ? true
+      : false
+  );
+
+  const [selected, setSelectedIndex] = useState(isCurrent ? current : 0);
   const [club, setClub] = useState({});
   const [hasPermissions, setHasPermissions] = useState(false);
   const [foundUser, setFoundUser] = useState({});
-  const [newMeetingComponent, setNewMeetingComponent] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +46,21 @@ export default function ClubPage({ user, setUser }) {
       ) {
         setSelectedIndex(index);
       }
+    }
+
+    navigate(`/${user.school.link}/${clubId}?current=${index}`);
+  };
+
+  const joinClub = async () => {
+    const club1 = { ...club };
+
+    club1.requests.push(user);
+    setClub(club1);
+
+    let response = await clubJoin(club._id, user._id);
+    if (response.success) {
+      club1.requests = response.club.requests;
+      setClub(club1);
     }
   };
 
@@ -67,6 +93,10 @@ export default function ClubPage({ user, setUser }) {
           (foundUser && foundUser.role === "officer")
         ) {
           setHasPermissions(true);
+          if (current === 2 || current === 3) {
+            setIsCurrent(true);
+            setSelectedIndex(current);
+          }
         }
 
         setFoundUser(foundUser);
@@ -112,7 +142,10 @@ export default function ClubPage({ user, setUser }) {
             <div className="club-header-left">
               <h2>{club.name}</h2>
               <div className="club-header-right-hidden">
-                <p>{club.members.length} members</p>
+                <p>
+                  {club.members.length}{" "}
+                  {club.members.length !== 1 ? "members" : "member"}
+                </p>
                 <p>Rm. {club.room}</p>
               </div>
               <div className="club-header-nav">
@@ -127,6 +160,30 @@ export default function ClubPage({ user, setUser }) {
                     Announcements
                   </div>
                 </a>
+
+                {foundUser == undefined && !hasPermissions ? (
+                  <button
+                    onClick={joinClub}
+                    disabled={
+                      club.requests.indexOf(
+                        club.requests.find((u) => u._id == user._id)
+                      ) !== -1
+                    }
+                    className={
+                      club.requests.indexOf(
+                        club.requests.find((u) => u._id == user._id)
+                      ) !== -1
+                        ? "requested join-right-btn club-join-hidden"
+                        : "join-right-btn club-join-hidden"
+                    }
+                  >
+                    {club.requests.indexOf(
+                      club.requests.find((u) => u._id == user._id)
+                    ) !== -1
+                      ? "Requested"
+                      : "Join Club"}
+                  </button>
+                ) : null}
 
                 {foundUser !== undefined || hasPermissions ? (
                   <a onClick={() => setSelected(1)}>
@@ -186,8 +243,32 @@ export default function ClubPage({ user, setUser }) {
               </div>
             </div>
             <div className="club-header-right">
-              <p>{club.members.length} members</p>
+              {club.members.length}{" "}
+              {club.members.length !== 1 ? "members" : "member"}
               <p>Rm. {club.room}</p>
+              {foundUser == undefined && !hasPermissions ? (
+                <button
+                  onClick={joinClub}
+                  disabled={
+                    club.requests.indexOf(
+                      club.requests.find((u) => u._id == user._id)
+                    ) !== -1
+                  }
+                  className={
+                    club.requests.indexOf(
+                      club.requests.find((u) => u._id == user._id)
+                    ) !== -1
+                      ? "requested join-right-btn"
+                      : "join-right-btn"
+                  }
+                >
+                  {club.requests.indexOf(
+                    club.requests.find((u) => u._id == user._id)
+                  ) !== -1
+                    ? "Requested"
+                    : "Join Club"}
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

@@ -156,7 +156,10 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                         </div>
                         <div className="club-card-lower">
                           <div className="club-card-lower-left">
-                            <p>{club.members.length} members</p>
+                            <p>
+                              {club.members.length}{" "}
+                              {club.members.length !== 1 ? "members" : "member"}
+                            </p>
                             <p>Rm. {club.room}</p>
                           </div>
                           <div className="club-card-lower-right">

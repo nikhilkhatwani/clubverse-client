@@ -10,12 +10,16 @@ export default function ClubAnnouncementsPage({
   hasPermissions,
   foundUser,
 }) {
-  const [pendingJoin, setPendingJoin] = useState(false);
+  const joinClub = async () => {
+    const club1 = { ...club };
 
-  const joinClub = async (club) => {
+    club1.requests.push(user);
+    setClub(club1);
+
     let response = await clubJoin(club._id, user._id);
     if (response.success) {
-      setPendingJoin(true);
+      club1.requests = response.club.requests;
+      setClub(club1);
     }
   };
 
@@ -73,17 +77,17 @@ export default function ClubAnnouncementsPage({
             {
               <button
                 onClick={joinClub}
-                style={
+                disabled={
                   club.requests.indexOf(
                     club.requests.find((u) => u._id == user._id)
                   ) !== -1
-                    ? {
-                        backgroundColor: "#757575",
-                        cursor: "not-allowed",
-                        color: "white",
-                        border: "none",
-                      }
-                    : {}
+                }
+                className={
+                  club.requests.indexOf(
+                    club.requests.find((u) => u._id == user._id)
+                  ) !== -1
+                    ? "requested join-right-btn"
+                    : "join-right-btn"
                 }
               >
                 {club.requests.indexOf(

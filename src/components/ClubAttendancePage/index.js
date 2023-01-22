@@ -63,10 +63,26 @@ export default function ClubAttendancePage({
       let sponsors1 = meeting.attendance.filter(
         (a) => a.user.type === "sponsor"
       );
-      let officers1 = club.members.filter((m) => m.role === "officer");
-      let members1 = meeting.attendance.filter(
-        (a) => a.user.type === "student"
-      );
+      let officers1 = [];
+      let members1 = [];
+
+      club.members
+        .filter((m) => m.role === "officer")
+        .forEach((officer) => {
+          let found = meeting.attendance.find(
+            (a) => a.user._id === officer.user._id
+          );
+          if (found) officers1.push(found);
+        });
+
+      club.members
+        .filter((m) => m.role === "member")
+        .forEach((member) => {
+          let found = meeting.attendance.find(
+            (a) => a.user._id === member.user._id
+          );
+          if (found) members1.push(found);
+        });
 
       sponsors1.sort((a, b) => {
         if (a.user.lastName < b.user.lastName) {

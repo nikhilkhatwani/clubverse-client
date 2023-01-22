@@ -18,7 +18,6 @@ export default function ClubMembersPage({
   const [members, setMembers] = useState([]);
   const [requests, setRequests] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
-  //const [memberDropDownLoading, setMemberDropDownLoading] = useState(false);
 
   useEffect(() => {
     let sponsors1 = club.sponsors;
@@ -187,6 +186,7 @@ export default function ClubMembersPage({
     club1.dues = club1.dues.filter((d) => d.user._id !== member._id);
     setClub(club1);
     setMembers(club1.members);
+    setSelectedMember(null);
     let response = await clubMemberRemove(club._id, user._id, member._id);
     if (response.success) {
       club1.members = response.club.members;

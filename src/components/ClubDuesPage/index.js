@@ -16,8 +16,24 @@ export default function ClubDuesPage({
 
   useEffect(() => {
     let sponsors1 = club.dues.filter((due) => due.user.type === "sponsor");
-    let officers1 = club.members.filter((m) => m.role === "officer");
-    let members1 = club.dues.filter((due) => due.user.type === "student");
+    let officers1 = [];
+    let members1 = [];
+
+    club.members
+      .filter((m) => m.role === "officer")
+      .forEach((officer) => {
+        let found = club.dues.find((due) => due.user._id == officer.user._id);
+        officers1.push(found);
+      });
+
+    club.members
+      .filter((m) => m.role === "member")
+      .forEach((member) => {
+        console.log(member);
+        let found = club.dues.find((due) => due.user._id === member.user._id);
+        console.log(found);
+        members1.push(found);
+      });
 
     // sort by last name
     sponsors1.sort((a, b) => {
