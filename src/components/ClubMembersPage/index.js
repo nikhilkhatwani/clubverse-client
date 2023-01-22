@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
+  clubAddSponsor,
   clubMemberApproveDeny,
   clubMemberPromoteDemote,
   clubMemberRemove,
+  clubRemoveSponsor,
 } from "../../utils/api/calls/clubs";
 
 export default function ClubMembersPage({
@@ -18,8 +20,11 @@ export default function ClubMembersPage({
   const [members, setMembers] = useState([]);
   const [requests, setRequests] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [newSponsor, setNewSponsor] = useState(false);
+  const [sponsorIndex, setSponsorIndex] = useState(-1);
 
   useEffect(() => {
+    console.log(club);
     let sponsors1 = club.sponsors;
     let officers1 = club.members.filter((m) => m.role === "officer");
     let members1 = club.members.filter((m) => m.role === "member");
@@ -127,6 +132,7 @@ export default function ClubMembersPage({
 
   const getDues = (member) => {
     let duesPaidMember = club.dues.find((d) => d.user._id == member._id);
+    if (!duesPaidMember) return "neutral";
     return duesPaidMember.paid;
   };
 
@@ -197,8 +203,103 @@ export default function ClubMembersPage({
     }
   };
 
+  const addSponsor = async (sponsor) => {
+    let club1 = { ...club };
+    club1.sponsors.push(sponsor);
+    club1.dues.push({
+      user: sponsor,
+      paid: "neutral",
+    });
+    setClub(club1);
+    setNewSponsor(false);
+
+    let response = await clubAddSponsor(club._id, user._id, sponsor._id);
+    if (response.success) {
+      club1.sponsors = response.club.sponsors;
+      club1.dues = response.club.dues;
+      setClub(club1);
+    } else {
+      setSelected(0);
+    }
+  };
+
+  const removeSponsor = async (sponsor) => {
+    let club1 = { ...club };
+    club1.sponsors = club1.sponsors.filter((s) => s._id !== sponsor._id);
+    club1.dues = club1.dues.filter((d) => d.user._id !== sponsor._id);
+    setClub(club1);
+
+    let response = await clubRemoveSponsor(club._id, user._id, sponsor._id);
+    if (response.success) {
+      club1.sponsors = response.club.sponsors;
+      club1.dues = response.club.dues;
+      setClub(club1);
+    } else {
+      setSelected(0);
+    }
+  };
+
   return (
     <div className="club-members-page">
+      {user.type === "admin" ||
+      (user.type === "sponsor" &&
+        club.sponsors.indexOf(club.sponsors.find((s) => s._id == user._id)) ==
+          0) ? (
+        <div className="meeting">
+          {newSponsor ? (
+            <>
+              <select
+                name="meeting"
+                id="meeting"
+                value={sponsorIndex}
+                onChange={(e) => {
+                  setSponsorIndex(e.target.value);
+                }}
+                defaultValue={-1}
+              >
+                <option value="-1" disabled selected>
+                  Select a sponsor
+                </option>
+
+                {club.school.sponsors.map((m, i) => {
+                  if (m._id == user._id) return;
+                  if (club.sponsors.find((s) => s._id == m._id)) return;
+
+                  return (
+                    <option key={i} value={i}>
+                      {m.firstName} {m.lastName}
+                    </option>
+                  );
+                })}
+              </select>
+              <button
+                className="create-meeting cancel-btn"
+                onClick={() => setNewSponsor(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className={
+                  sponsorIndex == -1
+                    ? "create-meeting disabled"
+                    : "create-meeting"
+                }
+                onClick={() => addSponsor(club.school.sponsors[sponsorIndex])}
+                disabled={sponsorIndex == -1}
+              >
+                Add sponsor
+              </button>
+            </>
+          ) : (
+            <button
+              className="create-meeting"
+              onClick={() => setNewSponsor(true)}
+            >
+              Add a new sponsor
+            </button>
+          )}
+        </div>
+      ) : null}
       <section className="sponsor">
         <h2>Sponsors ({sponsors.length})</h2>
         {sponsors.map((sponsor, i) => (
@@ -230,6 +331,23 @@ export default function ClubMembersPage({
                       </>
                     ) : null}
                   </div>
+                  {user.type === "admin" ||
+                  (user.type === "sponsor" &&
+                    club.sponsors.indexOf(
+                      club.sponsors.find((s) => s._id == user._id)
+                    ) == 0) ? (
+                    <div className="member-dropdown-right">
+                      {selectedMember.type == "sponsor" &&
+                        selectedMember._id !== user._id && (
+                          <button
+                            className="button-remove"
+                            onClick={() => removeSponsor(sponsor)}
+                          >
+                            Remove Sponsor
+                          </button>
+                        )}
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
             </div>

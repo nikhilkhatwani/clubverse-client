@@ -150,8 +150,13 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                         <div className="club-card-upper">
                           <h1>{club.name}</h1>
                           <h4>
-                            Sponsor: {club.sponsors[0].firstName}{" "}
-                            {club.sponsors[0].lastName}
+                            {club.sponsors.length == 1
+                              ? "Sponsor:"
+                              : "Sponsors:"}{" "}
+                            {club.sponsors[0].firstName}{" "}
+                            {club.sponsors[0].lastName}{" "}
+                            {club.sponsors.length > 1 &&
+                              `+${club.sponsors.length - 1}`}
                           </h4>
                         </div>
                         <div className="club-card-lower">

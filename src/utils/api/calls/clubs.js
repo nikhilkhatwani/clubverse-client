@@ -423,3 +423,43 @@ export const clubTagDelete = async (userId, tagId) => {
 
   return response.json();
 };
+
+export const clubAddSponsor = async (clubId, userId, sponsorId) => {
+  let url = `${API_URL}/clubs/sponsors/add`;
+
+  let data = {
+    clubId,
+    userId,
+    sponsorId,
+  };
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};
+
+export const clubRemoveSponsor = async (clubId, userId, sponsorId) => {
+  let url = `${API_URL}/clubs/sponsors/remove`;
+
+  let data = {
+    clubId,
+    userId,
+    sponsorId,
+  };
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};

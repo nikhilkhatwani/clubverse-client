@@ -7,6 +7,11 @@
   --neutral: #757575;
 }
 
+input,
+textarea {
+  font-family: "Chivo", sans-serif;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Chivo:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
 * {
@@ -89,6 +94,16 @@ body {
 .club-body {
   -ms-verflow-style: none;
   scrollbar-width: none;
+}
+
+.cancel-btn {
+  color: var(--no) !important;
+  border: 1px solid var(--no) !important;
+}
+
+.cancel-btn:hover {
+  color: white !important;
+  background-color: var(--no) !important;
 }
 
 .club-header-wrapper {
@@ -1116,4 +1131,319 @@ option[disabled] {
     margin-top: 10px;
     justify-content: flex-start;
   }
+}
+
+.club-settings-page {
+  width: 100%;
+  padding: 40px 180px;
+}
+.club-settings-page section {
+  margin-bottom: 25px;
+}
+.club-settings-page section h2 {
+  color: var(--primary-color);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  padding-bottom: 7px;
+}
+
+.club-settings-page section p {
+  color: var(--neutral);
+  padding-bottom: 10px;
+}
+
+.email-push-notifs label {
+  font-size: 1.05em;
+  color: var(--primary-color);
+  padding: 5px;
+  font-weight: 300;
+}
+
+.leave-button {
+  width: 120px;
+  padding: 5px 15px;
+  outline: none;
+  border: 1px solid var(--no);
+  background: none;
+  border-radius: 5px;
+  color: var(--no);
+  margin-top: 2px;
+}
+
+.leave-button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: var(--no);
+  transition: all 0.3s;
+}
+
+.tag {
+  padding: 7px 0px;
+  height: 30px;
+  width: 75px;
+  text-align: center;
+  border-radius: 15px;
+  font-size: 12px;
+  color: white;
+}
+
+.tag-settings {
+  padding: 7px 0px;
+  height: 30px;
+  width: 175px;
+  text-align: center;
+  border-radius: 15px;
+  font-size: 12px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.tag-settings .x {
+  background: black;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.x:hover {
+  cursor: pointer;
+}
+
+.tags-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.newTag {
+  width: 175px;
+  padding: 5px 0px;
+  margin: 1px 0px;
+  border: 1px solid var(--primary-color);
+  background: none;
+  border-radius: 5px;
+  color: var(--primary-color);
+}
+
+.newTag.disabled {
+  border: 1px solid var(--neutral) !important;
+  color: var(--neutral) !important;
+  cursor: not-allowed !important;
+  background-color: white !important;
+}
+
+.disabled {
+  border: 1px solid var(--neutral) !important;
+  color: var(--neutral) !important;
+  cursor: not-allowed !important;
+  background-color: white !important;
+}
+
+.newTag:hover {
+  cursor: pointer;
+  color: white;
+  background-color: var(--primary-color);
+  transition: all 0.3s;
+}
+
+.club-name input {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid black;
+  padding: 5px;
+  width: 250px;
+  font-size: 0.9em;
+  font-family: "Chivo", sans-serif;
+}
+
+.club-description textarea {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid black;
+  padding: 5px;
+  font-family: "Chivo", sans-serif;
+  font-size: 0.9em;
+}
+
+.date-container-settings {
+  background-color: black;
+  border-radius: 5px;
+  padding: 8px;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 175px;
+}
+
+.date-container-settings .x {
+  background: white;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+
+.tag-container {
+  display: flex;
+  gap: 100px;
+}
+.tags-right {
+  border: 1px solid var(--primary-color);
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.tags-right h4 {
+  text-align: center;
+  color: var(--primary-color);
+
+  margin-bottom: 10px;
+}
+
+.tags-right .x {
+  background: black;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.tags-right input[type="text"],
+.tags-right input[type="datetime-local"] {
+  width: 100%;
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.tags-right input[type="color"] {
+  width: 100%;
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+button.saveTag {
+  width: 100%;
+  padding: 3px 0px;
+  background: none;
+  color: var(--primary-color);
+  outline: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+}
+
+.saveTag:hover {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: all 0.3s;
+}
+
+.announcement-tags {
+  display: flex;
+  gap: 15px;
+  margin-left: 40px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.add-tag {
+  height: 20px;
+  width: 20px;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.add-tag:hover {
+  cursor: pointer;
+}
+
+.announcement-new {
+  margin: 10px 0px 0px 40px;
+  padding: 10px;
+  font-size: 15px;
+  resize: none;
+  width: calc(100% - 80px);
+  height: 80px;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.announcement .bottom {
+  display: flex;
+  margin-left: 40px;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.add-image {
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px 5px 10px;
+  background: none;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  color: var(--primary-color);
+  font-size: 15px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.announcement button:hover {
+  cursor: pointer;
+}
+
+.send-new-announcement {
+  width: 80px;
+  padding: 15px 0px 15px 0px;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color);
+  background-color: none;
+  color: var(--primary-color);
+}
+
+.send-new-announcement:hover {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: all 0.5s;
 }
