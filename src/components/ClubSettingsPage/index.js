@@ -189,24 +189,22 @@ export default function ClubSettingsPage({
           For each of the following options, an email will be sent to your
           school email based on what is checked.
         </p>
-        <input type="checkbox" value="Announcements" />
-        <label for="announcements">Announcements</label>
-        <br />
-        <input type="checkbox" value="Attendance updates" />
-        <label for="css">Attendance updates</label>
-        <br />
-        <input type="checkbox" name="fav_language" value="Dues updates" />
-        <label for="javascript">Dues updates</label>
-        <br />
-        <input
-          type="checkbox"
-          name="fav_language"
-          value="Club changes (Name change, description change, important events change"
-        />
-        <label for="javascript">
-          Club changes (Name change, description change, important events
-          change)
-        </label>
+        <div className="email-push-notifs-container">
+          <input type="checkbox" value="Announcements" />
+          <label for="announcements">Announcements</label>
+        </div>
+        <div className="email-push-notifs-container">
+          <input type="checkbox" value="Attendance updates" />
+          <label for="css">Attendance updates</label>
+        </div>
+        <div className="email-push-notifs-container">
+          <input type="checkbox" name="fav_language" value="Dues updates" />
+          <label for="javascript">Dues updates</label>
+        </div>
+        <div className="email-push-notifs-container">
+          <input type="checkbox" name="fav_language" value="Club changes" />
+          <label for="javascript">Club changes</label>
+        </div>
       </section>
       <section className="leave-club">
         <h2>Leave Club</h2>

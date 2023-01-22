@@ -884,6 +884,48 @@ option[disabled] {
     font-size: 0.65em;
     padding: 5px 10px;
   }
+
+  .club-settings-page section h2 {
+    font-size: 1.1em !important;
+  }
+
+  .club-settings-page section p {
+    font-size: 0.75em !important;
+  }
+
+  .club-name input,
+  .club-description textarea {
+    font-size: 0.75em !important;
+  }
+
+  .newTag {
+    width: 150px !important;
+    font-size: 0.75em !important;
+  }
+
+  .date-container-settings {
+    font-size: 0.6em !important;
+    width: 150px !important;
+    padding: 10px !important;
+  }
+
+  .tags-left span {
+    font-size: 0.7em !important;
+  }
+
+  .tag-settings {
+    font-size: 0.65em !important;
+    width: 150px !important;
+  }
+
+  .email-push-notifs label {
+    font-size: 0.7em !important;
+  }
+
+  .leave-button {
+    font-size: 0.7em !important;
+    padding: 5px !important;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -980,6 +1022,50 @@ option[disabled] {
   .club-attendance-page,
   .club-dues-page {
     padding: 20px 50px;
+  }
+
+  .club-settings-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 50px !important;
+  }
+
+  .tag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 25px !important;
+  }
+
+  .tags-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .club-name,
+  .club-description {
+    width: 100%;
+  }
+
+  .club-name input,
+  .club-description textarea {
+    width: calc(100% - 20px) !important;
+  }
+
+  .email-push-notifs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 }
 
@@ -1158,6 +1244,13 @@ option[disabled] {
   color: var(--primary-color);
   padding: 5px;
   font-weight: 300;
+}
+
+.email-push-notifs-container {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  text-align: left;
 }
 
 .leave-button {
