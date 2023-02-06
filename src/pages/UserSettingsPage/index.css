@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Chivo:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --primary-color: #004e78;
+  --background: #ffffff;
+  --secondary-background: #efefef;
+  --yes: #4bbd39;
+  --no: #ef6363;
+  --neutral: #757575;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Chivo", sans-serif;
+}
+
+.user-settings-page-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.user-settings-page-content {
+  padding: 40px 150px;
+  width: calc(3 * 326px + 50px + 300px);
+}
+
+.user-settings-title h1 {
+  font-size: 35px;
+  line-height: 42px;
+  font-weight: 700;
+  padding: 25px 0px;
+  color: var(--primary-color);
+}
+
+.user-settings-page-content-body {
+  margin-bottom: 30px;
+}
+
+.user-settings-page-content-footer button {
+  background-color: var(--background);
+  border: 1px solid var(--no);
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--no);
+}
+
+.user-settings-page-content-footer button:hover {
+  background-color: var(--no);
+  color: var(--background);
+  transition: 0.3s;
+}
+
+.user-settings-page-content-body-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-settings-page-content-body-section-content-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user-settings-page-content-body-section-content-item h3 {
+  font-size: 18px;
+  line-height: 17px;
+}
+
+.user-settings-page-content-body-section-content-item-content-pfp {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.user-settings-page-content-body-section-content-item-content-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-settings-page-content-body-section-content-item-content-buttons button {
+  background-color: var(--background);
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 10px 15px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--primary-color);
+}
+
+.user-settings-page-content-body-section-content-item-content-buttons
+  button:hover {
+  background-color: var(--primary-color);
+  color: var(--background);
+  transition: 0.3s;
+}
+
+.user-settings-page-content-body-section-content-item-content img {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.user-settings-page-content-body-section-content-item-content input {
+  border: 1px solid #000000;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 12px;
+  line-height: 14px;
+  color: #000000;
+  margin-right: 10px;
+}
+
+.user-settings-page-content-body-section-content-item-content input:focus {
+  outline: none;
+}
+
+.user-settings-page-content-body-section-content-item-content button {
+  background-color: var(--background);
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 10px 15px;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--primary-color);
+}
+
+.user-settings-page-content-body-section-content-item-content button:hover {
+  background-color: var(--primary-color);
+  color: var(--background);
+  transition: 0.3s;
+}
+
+@media screen and (max-width: 1200px) {
+  .user-settings-page-content {
+    width: calc(2 * 326px + 50px + 300px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-settings-page-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user-settings-title h1 {
+    text-align: center;
+    font-size: 25px;
+  }
+
+  .user-settings-page-content-body-section-content {
+    align-items: center;
+  }
+
+  .user-settings-page-content-body-section-content-item {
+    align-items: center;
+  }
+
+  .user-settings-page-content-body-section-content-item h3 {
+    margin-bottom: 10px;
+  }
+
+  .user-settings-page-content {
+    padding: 0;
+  }
+
+  .user-settings-page-content-footer button {
+    margin: 0 auto;
+    padding: 10px 15px;
+    font-size: 12px;
+    line-height: 14px;
+  }
+}

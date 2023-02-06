@@ -15,7 +15,6 @@ import {
 export default function ClubPage({ user, setUser }) {
   let current = new URLSearchParams(window.location.search).get("current");
   current = current ? current : 0;
-  console.log(current);
   current = parseInt(current);
 
   const [isCurrent, setIsCurrent] = useState(
@@ -130,9 +129,12 @@ export default function ClubPage({ user, setUser }) {
                 <Link to="/">Home</Link>
               </div>
 
-              <div className="nav-login">
-                <a href="login.html">
-                  <img src="/assets/default.png" />
+              <div
+                className="nav-login"
+                onClick={() => navigate(`/${user.school.link}/user/settings`)}
+              >
+                <a>
+                  <img src={user.profilePic} />
                   {user.firstName} {user.lastName !== "" ? user.lastName : null}
                 </a>
               </div>

@@ -52,16 +52,6 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
     navigate(`/${user.school.link}/${clubId}`);
   };
 
-  const logout = async () => {
-    setLoading(true);
-    let response = await userLogout(token);
-    if (response.success) {
-      setLoading(false);
-      setUser({});
-      navigate("/");
-    }
-  };
-
   const clubDecision = async (club, decision) => {
     if (decision) {
       setMyClubs((prev) => [...prev, club]);
@@ -126,9 +116,12 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
               <a href={`/${user.school.link}`}>Home</a>
             </div>
 
-            <div className="nav-login">
-              <a onClick={logout}>
-                <img src="/assets/default.png" />
+            <div
+              className="nav-login"
+              onClick={() => navigate(`/${user.school.link}/user/settings`)}
+            >
+              <a>
+                <img src={user.profilePic} />
                 {user.firstName} {user.lastName !== "" ? user.lastName : null}
               </a>
             </div>

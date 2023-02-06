@@ -63,3 +63,46 @@ export const userDelete = async (userId, deleteId) => {
 
   return response.json();
 };
+
+export const userNotificationsManage = async (
+  updatedNotifications,
+  userId,
+  clubId
+) => {
+  let url = `${API_URL}/users/notifications/manage`;
+
+  let data = {
+    updatedNotifications,
+    userId,
+    clubId,
+  };
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};
+
+export const userSettings = async (updatedSettings, userId) => {
+  let url = `${API_URL}/users/settings`;
+
+  let data = {
+    updatedSettings,
+    userId,
+  };
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};

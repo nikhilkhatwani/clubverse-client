@@ -291,7 +291,7 @@ export const clubMeetingDelete = async (clubId, userId, meetingId) => {
 };
 
 export const clubAnnouncementNew = async (clubId, userId, announcement) => {
-  const { message, tags, dateReminder, image } = announcement;
+  const { message, tags, dateReminder, images } = announcement;
 
   let url = `${API_URL}/clubs/announcements/new`;
 
@@ -301,7 +301,7 @@ export const clubAnnouncementNew = async (clubId, userId, announcement) => {
     message,
     tags,
     date: dateReminder,
-    image,
+    images,
   };
 
   let response = await fetch(url, {
@@ -320,7 +320,7 @@ export const clubAnnouncementEdit = async (
   userId,
   announcement
 ) => {
-  const { message, tags, dateReminder, image } = announcement;
+  const { message, tags, dateReminder, images } = announcement;
 
   let url = `${API_URL}/clubs/announcements/edit`;
 
@@ -330,7 +330,7 @@ export const clubAnnouncementEdit = async (
     message,
     tags,
     date: dateReminder,
-    image,
+    images,
   };
 
   let response = await fetch(url, {

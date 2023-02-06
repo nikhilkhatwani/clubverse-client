@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useDeferredValue } from "react";
 import moment from "moment";
-import { clubJoin } from "../../utils/api/calls/clubs";
+import { clubAnnouncementNew, clubJoin } from "../../utils/api/calls/clubs";
+import { imageUpload } from "../../utils/api/imageUpload";
+import Loading from "../Loading";
 
 export default function ClubAnnouncementsPage({
   user,
@@ -10,6 +12,30 @@ export default function ClubAnnouncementsPage({
   hasPermissions,
   foundUser,
 }) {
+  const [newAnnouncement, setNewAnnouncement] = useState({
+    message: "",
+    images: [],
+    tags: [],
+    files: [],
+    dateReminder: null,
+  });
+  const [newAnnouncementError, setNewAnnouncementError] = useState("");
+
+  const [filterData, setFilterData] = useState({
+    relevance: 0,
+    tag: -1,
+    user: -1,
+  });
+
+  const [openSelect, setOpenSelect] = useState(false);
+  const [openTagAdd, setOpenTagAdd] = useState(false);
+  const [openDateAdd, setOpenDateAdd] = useState(false);
+  const [selectedTag, setSelectedTag] = useState("0");
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const [imageLoading, setImageLoading] = useState(false);
+  const [fileLoading, setFileLoading] = useState(false);
+
   const joinClub = async () => {
     const club1 = { ...club };
 
@@ -23,6 +49,125 @@ export default function ClubAnnouncementsPage({
     }
   };
 
+  const onChange = (e, type) => {
+    if (type === "announcementText") {
+      setNewAnnouncement({ ...newAnnouncement, message: e.target.value });
+    }
+  };
+
+  const sendAnnouncement = async () => {
+    let { message, images, tags, files, dateReminder } = newAnnouncement;
+
+    if (message.length === 0) {
+      setNewAnnouncementError("Announcement text cannot be empty");
+      return;
+    }
+
+    let club1 = { ...club };
+    let announcement = {
+      message,
+      images,
+      tags,
+      files,
+      dateReminder,
+      user,
+      createdAt: new Date().toISOString(),
+      club,
+    };
+
+    club1.announcements.push(announcement);
+    setClub(club1);
+
+    setNewAnnouncement({
+      message: "",
+      images: [],
+      tags: [],
+      files: [],
+      dateReminder: null,
+    });
+
+    setSelectedTag("0");
+    setSelectedDate("");
+
+    setOpenSelect(false);
+    setOpenTagAdd(false);
+    setOpenDateAdd(false);
+
+    let response = await clubAnnouncementNew(club._id, user._id, announcement);
+
+    if (response.success) {
+      club1.announcements = response.club.announcements;
+      setClub(club1);
+    } else {
+      setNewAnnouncementError(response.message);
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = e.target.files;
+    if (!files[0]) return;
+
+    setImageLoading(true);
+
+    await imageUpload(files).then(async (images) => {
+      setNewAnnouncement({
+        ...newAnnouncement,
+        images: newAnnouncement.images.concat(images),
+      });
+      setImageLoading(false);
+    });
+  };
+
+  // const handleFileUpload = async (e) => {
+  //   const files = e.target.files;
+  //   if (!files[0]) return;
+
+  //   setFileLoading(true);
+
+  //   function stringify(obj) {
+  //     const replacer = [];
+  //     for (const key in obj) {
+  //       replacer.push(key);
+  //     }
+  //     return JSON.stringify(obj, replacer);
+  //   }
+
+  //   const firstFile = files[0];
+
+  //   const readFileContent = (file) => {
+  //     return new Promise((resolve, reject) => {
+  //       const reader = new FileReader();
+  //       reader.onerror = reject;
+  //       reader.onload = () => resolve(reader.result);
+  //       reader.readAsDataURL(file);
+  //     });
+  //   };
+
+  //   let fileContent = await readFileContent(firstFile);
+  //   let replace = fileContent.replace(
+  //     ["data:" + firstFile.type + ";base64,"],
+  //     [""]
+  //   );
+
+  //   let file = {
+  //     name: firstFile.name,
+  //     type: firstFile.type,
+  //     size: firstFile.size,
+  //     content: replace,
+  //   };
+
+  //   let response = await fetch("http://localhost:5002/api/upload", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: stringify(file),
+  //   });
+
+  //   let data = response.json();
+  //   console.log(data);
+  // };
+
   return (
     <div className="announcements-div club-main">
       <aside>
@@ -34,7 +179,7 @@ export default function ClubAnnouncementsPage({
           <h1>Important Dates</h1>
           <div className="dates">
             {club.importantDates.map((date, i) => (
-              <div className="date">
+              <div className="date" key={i}>
                 <div className="date-container">
                   {moment(date.date).format("MM/DD/YY hh:mm a")}
                 </div>
@@ -51,12 +196,68 @@ export default function ClubAnnouncementsPage({
         {foundUser !== undefined || hasPermissions ? (
           <div className="filter left">
             <h1>Filter</h1>
-            <p>Sort by Relevance</p>
-            <select name="" id=""></select>
-            <p>Sort by Tag</p>
-            <select name="" id=""></select>
-            <p>Sort by User</p>
-            <select name="" id=""></select>
+            <div className="filter-container">
+              <p>Sort by Relevance</p>
+              <select
+                value={filterData.relevance}
+                onChange={(e) => {
+                  setFilterData({ ...filterData, relevance: e.target.value });
+                  setClub(club);
+                }}
+              >
+                <option value="0">Newest to Oldest (default)</option>
+                <option value="1">Oldest to Newest</option>
+              </select>
+            </div>
+            <div className="filter-container">
+              <p>Sort by Tag</p>
+              <select
+                value={filterData.tag}
+                style={
+                  club.tags[filterData.tag]
+                    ? {
+                        color: club.tags[filterData.tag]?.color,
+                        border: `1px solid ${club.tags[filterData.tag]?.color}`,
+                      }
+                    : {}
+                }
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setFilterData({ ...filterData, tag: e.target.value });
+                  setClub(club);
+                }}
+              >
+                <option style={{ color: "var(--primary-color)" }} value="-1">
+                  No Tag (default)
+                </option>
+                {club.tags.map((tag, i) => (
+                  <option value={i} key={i} style={{ color: tag.color }}>
+                    {tag.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="filter-container">
+              <p>Sort by User</p>
+              <select
+                value={filterData.user}
+                onChange={(e) => {
+                  setFilterData({ ...filterData, user: e.target.value });
+                  setClub(club);
+                }}
+              >
+                <option value="-1">No User (default)</option>
+                {club.sponsors
+                  .concat(club.members.filter((m) => m.role == "officer"))
+                  .map((m, i) => (
+                    <option value={m.user ? m.user._id : m._id} key={i}>
+                      {m.user
+                        ? m.user.firstName + " " + m.user.lastName
+                        : m.firstName + " " + m.lastName}
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
         ) : (
           <div className="filter left join">
@@ -101,55 +302,348 @@ export default function ClubAnnouncementsPage({
         )}
       </aside>
       <div className="announcements">
+        {hasPermissions && (
+          <div className="announcement">
+            <div className="announcement-top">
+              <div className="announcement-author">
+                <img src={user.profilePic} alt="" />
+                <h3>
+                  {user.firstName} {user.lastName !== "" ? user.lastName : null}
+                </h3>
+              </div>
+            </div>
+            <div className="announcement-tags">
+              {newAnnouncement.tags.map((tag, i) => (
+                <div
+                  className="tag-settings"
+                  style={{ backgroundColor: tag.color }}
+                  key={i}
+                >
+                  {tag.name}
+                  <div
+                    className="x"
+                    onClick={() => {
+                      let newAnnouncement1 = { ...newAnnouncement };
+                      newAnnouncement1.tags.splice(i, 1);
+                      setNewAnnouncement(newAnnouncement1);
+                    }}
+                  >
+                    x
+                  </div>
+                </div>
+              ))}
+              {newAnnouncement.dateReminder !== null &&
+              newAnnouncement.dateReminder !== undefined ? (
+                <div className="date-container-settings">
+                  {moment(newAnnouncement.dateReminder).format(
+                    "MM/DD/YY h:mm a"
+                  )}
+                  <div
+                    className="x"
+                    onClick={() => {
+                      let newAnnouncement1 = { ...newAnnouncement };
+                      newAnnouncement1.dateReminder = null;
+                      setNewAnnouncement(newAnnouncement1);
+                    }}
+                  >
+                    x
+                  </div>
+                </div>
+              ) : null}
+              <div
+                className="add-tag"
+                onClick={() => {
+                  setOpenSelect(!openSelect);
+                  setOpenTagAdd(false);
+                  setOpenDateAdd(false);
+                  setSelectedTag("0");
+                  setSelectedDate("");
+                }}
+              >
+                {openTagAdd || openDateAdd || openSelect ? "x" : "+"}
+              </div>
+
+              {openSelect && (
+                <div className="tag-choose">
+                  <button
+                    onClick={() => {
+                      setOpenTagAdd(!openTagAdd);
+                      setOpenSelect(!openSelect);
+                    }}
+                  >
+                    Add New Tag
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setOpenDateAdd(!openDateAdd);
+                      setOpenSelect(!openSelect);
+                      if (newAnnouncement.dateReminder !== null) {
+                        setSelectedDate(newAnnouncement.dateReminder);
+                      }
+                    }}
+                  >
+                    {newAnnouncement.dateReminder !== null
+                      ? "Edit Date"
+                      : "New Date"}
+                  </button>
+                </div>
+              )}
+
+              {openTagAdd && (
+                <div className="tag-add">
+                  <div className="add-tag-tag">
+                    <select
+                      onChange={(e) => {
+                        setSelectedTag(e.target.value);
+                      }}
+                      value={selectedTag}
+                    >
+                      <option value="0" disabled selected>
+                        Select a tag
+                      </option>
+
+                      {club.tags.map((tag, i) => (
+                        <>
+                          {newAnnouncement.tags.indexOf(tag) !== -1 ? null : (
+                            <option
+                              key={i}
+                              style={{ color: tag.color }}
+                              value={tag._id}
+                            >
+                              {tag.name}
+                            </option>
+                          )}
+                        </>
+                      ))}
+                    </select>
+
+                    <button
+                      disabled={selectedTag === "0"}
+                      className={selectedTag === "0" ? "disabled" : ""}
+                      onClick={() => {
+                        if (selectedTag === "0") return;
+                        let newAnnouncement1 = { ...newAnnouncement };
+                        newAnnouncement1.tags.push(
+                          club.tags.find((tag) => tag._id === selectedTag)
+                        );
+
+                        setNewAnnouncement(newAnnouncement1);
+                        setOpenTagAdd(false);
+                        setSelectedTag("0");
+                      }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {openDateAdd && (
+                <div className="add-tag-date">
+                  <input
+                    type="datetime-local"
+                    name="datetime"
+                    value={selectedDate}
+                    onChange={(e) => {
+                      setSelectedDate(e.target.value);
+                    }}
+                  />
+
+                  <button
+                    disabled={selectedDate === ""}
+                    className={selectedDate === "" ? "disabled" : ""}
+                    onClick={() => {
+                      if (selectedTag === "") return;
+                      let newAnnouncement1 = { ...newAnnouncement };
+                      newAnnouncement1.dateReminder = selectedDate;
+                      setNewAnnouncement(newAnnouncement1);
+                      setOpenDateAdd(false);
+                      setSelectedDate("");
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
+            </div>
+            <textarea
+              placeholder="Type something..."
+              className="announcement-new"
+              value={newAnnouncement.message}
+              onChange={(e) => onChange(e, "announcementText")}
+            />
+            {newAnnouncement.images.length > 0 && (
+              <div className="announcement-images">
+                {newAnnouncement.images.map((image, i) => (
+                  <div className="image-container" key={i}>
+                    <img src={image} alt="announcement" />
+                    <div
+                      className="x"
+                      onClick={() => {
+                        let newAnnouncement1 = { ...newAnnouncement };
+                        newAnnouncement1.images.splice(i, 1);
+                        setNewAnnouncement(newAnnouncement1);
+                      }}
+                    >
+                      x
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="bottom">
+              <label className="add-image">
+                <input
+                  type="file"
+                  id="btn_input"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                />
+                {imageLoading ? (
+                  <Loading insideWrapper={false} size="small" />
+                ) : (
+                  <>
+                    <span>+</span>Add image
+                  </>
+                )}
+              </label>
+
+              {/* <label className="add-image add-file">
+                <input
+                  type="file"
+                  id="btn_input"
+                  accept="!image/*"
+                  onChange={handleFileUpload}
+                />
+
+                {fileLoading ? (
+                  <Loading insideWrapper={false} size="small" />
+                ) : (
+                  <>
+                    <span>+</span>Add file
+                  </>
+                )}
+              </label> */}
+              <button
+                className="send-new-announcement"
+                onClick={sendAnnouncement}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        )}
         {club.announcements.length === 0 ? (
           <h3 style={{ textAlign: "center", color: "#757575" }}>
             No announcements yet
           </h3>
         ) : null}
-        {club.announcements.map((announcement, i) => {
-          <div className="announcement">
-            <div className="announcement-top">
-              <div className="announcement-author">
-                <img src="/assets/default.png" alt="" />
-                <h3>
-                  {announcement.user.firstName}{" "}
-                  {announcement.user.lastName !== "" ? user.lastName : null}
-                </h3>
+        {club.announcements
+          .sort((a, b) => {
+            if (filterData.relevance == 0) {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            } else {
+              return new Date(a.createdAt) - new Date(b.createdAt);
+            }
+          })
+          .filter((announcement) => {
+            if (filterData.tag == -1) return true;
+            const tagFound = club.tags[filterData.tag];
+            if (tagFound) {
+              return (
+                announcement.tags.indexOf(
+                  announcement.tags.find((t) => t._id == tagFound._id)
+                ) !== -1
+              );
+            } else {
+              return true;
+            }
+          })
+          .filter((announcement) => {
+            if (filterData.user == -1) return true;
+            return announcement.user._id == filterData.user;
+          })
+          .map((announcement, i) => (
+            <div className="announcement" key={i}>
+              <div className="announcement-top">
+                <div className="announcement-author">
+                  <img src={announcement.user.profilePic} alt="" />
+                  <h3>
+                    {announcement.user.firstName}{" "}
+                    {announcement.user.lastName !== ""
+                      ? announcement.user.lastName
+                      : null}
+                  </h3>
+                </div>
+                <p>{moment(announcement.createdAt).fromNow()}</p>
               </div>
-              <p>{moment(announcement.dateCreated).fromNow()}</p>
-            </div>
 
-            <div className="announcement-tags">
-              {announcement.tags.map((tag, i) => {
-                <div className="tag" style={{ backgroundColor: tag.color }}>
-                  {tag.name}
-                </div>;
-              })}
+              <div className="announcement-tags">
+                {announcement.tags.map((tag, i) => (
+                  <div
+                    className="tag"
+                    key={i}
+                    style={{ backgroundColor: tag.color }}
+                  >
+                    {tag.name}
+                  </div>
+                ))}
 
-              {announcement.dateReminder !== null && (
-                <div className="date-container">
-                  {announcement.dateReminder}
+                {announcement.dateReminder !== null &&
+                announcement.dateReminder !== undefined ? (
+                  <div className="date-container">
+                    {moment(announcement.dateReminder).format(
+                      "MM/DD/YY h:mm a"
+                    )}
+                  </div>
+                ) : null}
+              </div>
+              <div className="announcement-body">
+                <p>{announcement.message}</p>
+              </div>
+              {announcement.images.length > 0 && (
+                <div className="announcement-images">
+                  {announcement.images.map((image, i) => (
+                    <div className="image-container" key={i}>
+                      <img src={image} alt="announcement" />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
-            <div className="announcement-body">
-              <p>{announcement.message}</p>
-            </div>
-          </div>;
-        })}
+          ))}
       </div>
       <div className="members">
         <h1>Members ({club.members.length})</h1>
         <div className="main-member-list">
-          {club.members.map((member, i) => (
-            <div className="member">
-              <img src="/assets/default.png" alt="" />
-              <p>
-                {member.user.firstName}{" "}
-                {member.user.lastName !== "" && member.user.lastName}
-              </p>
-            </div>
-          ))}
+          {club.members
+            .filter((m) => m.role === "officer")
+            .map((member, i) => (
+              <div className="member" key={i}>
+                <div className="member-bar-member-wrapper">
+                  <img src={member.user.profilePic} alt="" />
+                  <p>
+                    {member.user.firstName}{" "}
+                    {member.user.lastName !== "" && member.user.lastName}
+                  </p>
+                </div>
+              </div>
+            ))}
+          {club.members
+            .filter((m) => m.role !== "officer")
+            .map((member, i) => (
+              <div className="member" key={i}>
+                <div className="member-bar-member-wrapper">
+                  <img src={member.user.profilePic} alt="" />
+                  <p>
+                    {member.user.firstName}{" "}
+                    {member.user.lastName !== "" && member.user.lastName}
+                  </p>
+                </div>
+              </div>
+            ))}
 
           {club.members.length === 0 && (
             <h2
@@ -160,77 +654,6 @@ export default function ClubAnnouncementsPage({
           )}
         </div>
       </div>
-
-      {foundUser !== undefined || hasPermissions ? (
-        <div className="filter right fl-r" style={{ display: "none" }}>
-          <h1>Filter</h1>
-          <p>Sort by Relevance</p>
-          <select name="" id=""></select>
-          <p>Sort by Tag</p>
-          <select name="" id=""></select>
-          <p>Sort by User</p>
-          <select name="" id=""></select>
-        </div>
-      ) : (
-        <div className="filter right join fl-r" style={{ display: "none" }}>
-          <h1>
-            {club.requests.indexOf(
-              club.requests.find((u) => u._id == user._id)
-            ) !== -1
-              ? "Pending Join Request"
-              : "Join"}
-          </h1>
-          <p>
-            {club.requests.indexOf(
-              club.requests.find((u) => u._id == user._id)
-            ) !== -1
-              ? "Your join request is pending"
-              : "Interested in joining this club? Request to join the club by clicking the button below."}
-          </p>
-          {
-            <button
-              onClick={joinClub}
-              style={
-                club.requests.indexOf(
-                  club.requests.find((u) => u._id == user._id)
-                ) !== -1
-                  ? {
-                      backgroundColor: "#757575",
-                      cursor: "not-allowed",
-                      color: "white",
-                      border: "none",
-                    }
-                  : {}
-              }
-            >
-              {club.requests.indexOf(
-                club.requests.find((u) => u._id == user._id)
-              ) !== -1
-                ? "Requested"
-                : "Join Club"}
-            </button>
-          }
-        </div>
-      )}
-
-      {/* <div className="filter right" style={{ display: "none" }}>
-        <h1>Filter</h1>
-        <p>Sort by Relevance</p>
-        <select name="" id=""></select>
-        <p>Sort by Tag</p>
-        <select name="" id=""></select>
-        <p>Sort by User</p>
-        <select name="" id=""></select>
-      </div>
-
-      <div className="filter right join" style={{ display: "none" }}>
-        <h1>Join</h1>
-        <p>
-          Interested in joining this club? Request to join the club by clicking
-          the button below.
-        </p>
-        <button>Join club</button>
-      </div> */}
     </div>
   );
 }

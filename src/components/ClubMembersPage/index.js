@@ -22,9 +22,9 @@ export default function ClubMembersPage({
   const [selectedMember, setSelectedMember] = useState(null);
   const [newSponsor, setNewSponsor] = useState(false);
   const [sponsorIndex, setSponsorIndex] = useState(-1);
+  const [occupied, setOccupied] = useState(false);
 
   useEffect(() => {
-    console.log(club);
     let sponsors1 = club.sponsors;
     let officers1 = club.members.filter((m) => m.role === "officer");
     let members1 = club.members.filter((m) => m.role === "member");
@@ -78,7 +78,8 @@ export default function ClubMembersPage({
 
   const requestOperation = async (requestId, approveStatus) => {
     if (!hasPermissions) return;
-
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     let request = club1.requests.find(
       (req) => req._id.toString() === requestId
@@ -103,13 +104,14 @@ export default function ClubMembersPage({
       approveStatus
     );
     if (response.success) {
+      setOccupied(false);
       club1.requests = response.club.requests;
       club1.members = response.club.members;
       club1.dues = response.club.dues;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
-      console.log(response.message);
     }
   };
 
@@ -148,7 +150,8 @@ export default function ClubMembersPage({
 
   const promoteDemote = async (member) => {
     if (user.type !== "admin" && user.type !== "sponsor") return;
-
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     let member1 = club1.members.find((m) => m.user._id == member._id);
 
@@ -178,16 +181,19 @@ export default function ClubMembersPage({
       member._id
     );
     if (response.success) {
+      setOccupied(false);
       club1.members = response.club.members;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
 
   const removeMember = async (member) => {
     if (user.type !== "admin" && user.type !== "sponsor") return;
-
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     club1.members = club1.members.filter((m) => m.user._id !== member._id);
     club1.dues = club1.dues.filter((d) => d.user._id !== member._id);
@@ -196,15 +202,19 @@ export default function ClubMembersPage({
     setSelectedMember(null);
     let response = await clubMemberRemove(club._id, user._id, member._id);
     if (response.success) {
+      setOccupied(false);
       club1.members = response.club.members;
       club1.dues = response.club.dues;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
 
   const addSponsor = async (sponsor) => {
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     club1.sponsors.push(sponsor);
     club1.dues.push({
@@ -216,15 +226,19 @@ export default function ClubMembersPage({
 
     let response = await clubAddSponsor(club._id, user._id, sponsor._id);
     if (response.success) {
+      setOccupied(false);
       club1.sponsors = response.club.sponsors;
       club1.dues = response.club.dues;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
 
   const removeSponsor = async (sponsor) => {
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     club1.sponsors = club1.sponsors.filter((s) => s._id !== sponsor._id);
     club1.dues = club1.dues.filter((d) => d.user._id !== sponsor._id);
@@ -232,10 +246,12 @@ export default function ClubMembersPage({
 
     let response = await clubRemoveSponsor(club._id, user._id, sponsor._id);
     if (response.success) {
+      setOccupied(false);
       club1.sponsors = response.club.sponsors;
       club1.dues = response.club.dues;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
@@ -308,7 +324,7 @@ export default function ClubMembersPage({
             <div className="member-page-member" key={i}>
               <div className="person-wrapper pw">
                 <div className="person">
-                  <img src="/assets/default.png" alt="" />
+                  <img src={sponsor.profilePic} alt="" />
                   <h4>
                     {sponsor.lastName}, {sponsor.firstName}
                   </h4>
@@ -364,7 +380,7 @@ export default function ClubMembersPage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper pw">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={officer.user.profilePic} alt="" />
                 <h4>
                   {officer.user.lastName}, {officer.user.firstName}
                 </h4>
@@ -430,7 +446,7 @@ export default function ClubMembersPage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper pw">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={member.user.profilePic} alt="" />
                 <h4>
                   {member.user.lastName}, {member.user.firstName}
                 </h4>
@@ -497,7 +513,7 @@ export default function ClubMembersPage({
             <div className="member-page-member" key={i}>
               <div className="person-wrapper pw">
                 <div className="person">
-                  <img src="/assets/default.png" alt="" />
+                  <img src={request.profilePic} alt="" />
                   <h4>
                     {request.lastName}, {request.firstName}
                   </h4>

@@ -13,6 +13,7 @@ export default function ClubDuesPage({
   const [sponsors, setSponsors] = useState([]);
   const [officers, setOfficers] = useState([]);
   const [members, setMembers] = useState([]);
+  const [occupied, setOccupied] = useState(false);
 
   useEffect(() => {
     let sponsors1 = club.dues.filter((due) => due.user.type === "sponsor");
@@ -29,9 +30,7 @@ export default function ClubDuesPage({
     club.members
       .filter((m) => m.role === "member")
       .forEach((member) => {
-        console.log(member);
         let found = club.dues.find((due) => due.user._id === member.user._id);
-        console.log(found);
         members1.push(found);
       });
 
@@ -73,7 +72,8 @@ export default function ClubDuesPage({
 
   const duesOperation = async (updateId, paidStatus) => {
     if (!hasPermissions) return;
-
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     let due = club1.dues.find(
       (thing) => thing.user._id.toString() === updateId
@@ -91,9 +91,11 @@ export default function ClubDuesPage({
     );
 
     if (response.success) {
+      setOccupied(false);
       club1.dues = response.club.dues;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
@@ -106,7 +108,7 @@ export default function ClubDuesPage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={sponsor.user.profilePic} alt="" />
                 <h4>
                   {sponsor.user.lastName}, {sponsor.user.firstName}
                 </h4>
@@ -153,7 +155,7 @@ export default function ClubDuesPage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={officer.user.profilePic} alt="" />
                 <h4>
                   {officer.user.lastName}, {officer.user.firstName}
                 </h4>
@@ -200,7 +202,7 @@ export default function ClubDuesPage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={member.user.profilePic} alt="" />
                 <h4>
                   {member.user.lastName}, {member.user.firstName}
                 </h4>

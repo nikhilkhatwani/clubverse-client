@@ -1,6 +1,6 @@
 import "./index.css";
 
-export default function Loading({ insideWrapper = true }) {
+export default function Loading({ insideWrapper = true, size = "normal" }) {
   return (
     <>
       {insideWrapper ? (
@@ -8,7 +8,7 @@ export default function Loading({ insideWrapper = true }) {
           <div className="spinner"></div>
         </div>
       ) : (
-        <div className="spinner small"></div>
+        <div className={`spinner ${size}`}></div>
       )}
     </>
   );

@@ -18,9 +18,15 @@
   animation: spin-anim 1.2s linear infinite;
 }
 
-.small {
+.normal {
   width: 32px;
   height: 32px;
+  border-width: 4px;
+}
+
+.small {
+  width: 20px;
+  height: 20px;
   border-width: 4px;
 }
 

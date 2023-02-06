@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import { clubMeetingNew, clubMeetingEdit } from "../../utils/api/calls/clubs";
+import {
+  clubMeetingNew,
+  clubMeetingEdit,
+  clubMeetingDelete,
+} from "../../utils/api/calls/clubs";
 
 export default function ClubAttendancePage({
   user,
@@ -15,10 +19,12 @@ export default function ClubAttendancePage({
   const [members, setMembers] = useState([]);
   const [meetingIndex, setMeetingIndex] = useState(club.meetings.length - 1); // by default, sets meeting to the most recent
   const [error, setError] = useState("");
+  const [occupied, setOccupied] = useState(false);
 
   const attendanceOperation = async (updateId, attendStatus) => {
     if (!hasPermissions) return;
-
+    if (occupied) return;
+    setOccupied(true);
     let club1 = { ...club };
     let current = club1.meetings[meetingIndex].attendance.find(
       (a) => a.user._id === updateId
@@ -35,22 +41,80 @@ export default function ClubAttendancePage({
     );
 
     if (response.success) {
+      setOccupied(false);
       club1.meetings = response.club.meetings;
       setClub(club1);
     } else {
+      setOccupied(false);
       setSelected(0);
     }
   };
 
   const createMeeting = async () => {
+    if (occupied) return;
+    setOccupied(true);
     const currentDate = Date.now();
     let club1 = { ...club };
+
+    club1.meetings.push({
+      date: currentDate,
+      club,
+      attendance: [
+        ...club.sponsors.map((s) => {
+          return {
+            user: s,
+            status: "neutral",
+          };
+        }),
+        ...club.members.map((m) => {
+          return {
+            user: m.user,
+            status: "neutral",
+          };
+        }),
+      ],
+    });
+    setClub(club1);
+    setMeetingIndex(club1.meetings.length - 1);
+
     let response = await clubMeetingNew(club._id, user._id, currentDate);
     if (response.success) {
+      setOccupied(false);
       club1.meetings = response.club.meetings;
       setClub(club1);
-      setMeetingIndex(club1.meetings.length - 1);
     } else {
+      setOccupied(false);
+      setError(response.message);
+    }
+  };
+
+  const deleteMeeting = async () => {
+    if (occupied) return;
+    setOccupied(true);
+    let club1 = { ...club };
+    const found = club.meetings[meetingIndex]._id;
+
+    let set = meetingIndex - 1;
+
+    if (set < 0) set = 0;
+    if (set > club.meetings.length - 1) set = club.meetings.length - 1;
+    if (club.meetings.length === 1) set = -1;
+
+    setMeetingIndex(set);
+    setSponsors([]);
+    setOfficers([]);
+    setMembers([]);
+
+    club1.meetings.splice(meetingIndex, 1);
+    setClub(club1);
+
+    let response = await clubMeetingDelete(club._id, user._id, found);
+    if (response.success) {
+      setOccupied(false);
+      club1.meetings = response.club.meetings;
+      setClub(club1);
+    } else {
+      setOccupied(false);
       setError(response.message);
     }
   };
@@ -148,6 +212,14 @@ export default function ClubAttendancePage({
         <button className="create-meeting" onClick={createMeeting}>
           Create Meeting
         </button>
+        {meetingIndex !== -1 && (
+          <button
+            className="create-meeting delete-meeting"
+            onClick={deleteMeeting}
+          >
+            Delete Meeting
+          </button>
+        )}
       </div>
       <section className="sponsor">
         <h2>Sponsors ({sponsors.length})</h2>
@@ -155,7 +227,7 @@ export default function ClubAttendancePage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={sponsor.user.profilePic} alt="" />
                 <h4>
                   {sponsor.user.lastName}, {sponsor.user.firstName}
                 </h4>
@@ -208,7 +280,7 @@ export default function ClubAttendancePage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={officer.user.profilePic} alt="" />
                 <h4>
                   {officer.user.lastName}, {officer.user.firstName}
                 </h4>
@@ -261,7 +333,7 @@ export default function ClubAttendancePage({
           <div className="member-page-member" key={i}>
             <div className="person-wrapper">
               <div className="person">
-                <img src="/assets/default.png" alt="" />
+                <img src={member.user.profilePic} alt="" />
                 <h4>
                   {member.user.lastName}, {member.user.firstName}
                 </h4>

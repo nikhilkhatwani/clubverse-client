@@ -145,10 +145,15 @@ export default function App() {
           {/* NOTE: Need to check if this is user school in component */}
           <Route
             exact
-            path="/:schoolLink/:userId/settings"
+            path="/:schoolLink/user/settings"
             element={
               JSON.stringify(user) !== "{}" ? (
-                <UserSettingsPage />
+                <UserSettingsPage
+                  user={user}
+                  setUser={setUser}
+                  token={token}
+                  setToken={setToken}
+                />
               ) : (
                 <Navigate replace to="/login" />
               )

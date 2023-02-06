@@ -155,6 +155,51 @@ body {
 .member-dropdown {
 }
 
+.tag-choose {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tag-choose button {
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 5px 10px;
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.tag-choose button:hover,
+.add-tag-tag button:hover,
+.add-tag-date button:hover {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.add-tag-tag,
+.add-tag-date {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add-tag-tag select,
+.add-tag-tag button,
+.add-tag-date input,
+.add-tag-date button {
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 5px 10px;
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 12px;
+}
+
 .club-header-link.selected {
   border: 2px solid var(--primary-color);
   border-radius: 15px;
@@ -165,6 +210,27 @@ body {
 .club-header-right {
   color: #757575;
   font-size: 15px;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.filter-container select {
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  padding: 5px 10px;
+  background-color: white;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.filter-container select:focus {
+  outline: none;
 }
 
 /* club main */
@@ -316,8 +382,8 @@ aside {
 }
 
 .announcement-author img {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
@@ -339,8 +405,8 @@ aside {
 }
 
 .announcement-tags .tag {
-  padding: 7px 0px;
-  width: 75px;
+  padding: 7px 10px;
+  width: auto;
   text-align: center;
   border-radius: 15px;
   font-size: 12px;
@@ -400,6 +466,27 @@ aside {
   flex-direction: column;
   padding-top: 15px;
   gap: 15px;
+  align-items: center;
+}
+
+.member-bar-member-wrapper {
+  width: 80%;
+  display: flex;
+  justify-content: left;
+  padding: 5px;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  align-items: center;
+  color: #757575;
+  max-height: 40px;
+}
+
+.member p {
+  text-overflow: ellipsis !important;
+  max-width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .member {
@@ -407,10 +494,12 @@ aside {
   justify-content: center;
   padding: 5px;
   gap: 10px;
-  border: 1px solid #757575;
+  border: 1px solid transparent;
   border-radius: 15px;
   align-items: center;
   color: #757575;
+  max-height: 40px;
+  width: 100%;
 }
 
 .member:hover {
@@ -742,6 +831,17 @@ aside {
   transition: background-color 0.2s;
 }
 
+.delete-meeting {
+  color: var(--no) !important;
+  border: 1px solid var(--no) !important;
+}
+
+.delete-meeting:hover {
+  background-color: var(--no) !important;
+  color: white !important;
+  transition: background-color 0.2s;
+}
+
 .meeting select option {
   height: 60px;
   color: black;
@@ -759,6 +859,49 @@ option[disabled] {
 
 .club-join-hidden {
   display: none;
+}
+
+.announcement-images {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-auto-rows: 220px;
+  grid-gap: 10px;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  /* background-color: #c4c4c4; */
+}
+
+.image-container img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+}
+
+.image-container .x {
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 1150px) {
+  .dates {
+    flex-direction: column;
+  }
 }
 
 @media screen and (max-width: 1030px) {
@@ -845,10 +988,10 @@ option[disabled] {
     font-size: 12px;
   }
 
-  .person img {
+  /* .person img {
     height: 25px;
     width: 25px;
-  }
+  } */
 
   .person-wrapper {
     padding: 5px;
@@ -925,6 +1068,77 @@ option[disabled] {
   .leave-button {
     font-size: 0.7em !important;
     padding: 5px !important;
+  }
+
+  .send-new-announcement {
+    font-size: 0.7em !important;
+    padding: 5px !important;
+  }
+
+  .add-image {
+    font-size: 0.7em !important;
+    padding: 5px !important;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+
+  .announcement-new {
+    font-size: 0.7em !important;
+    padding: 5px !important;
+  }
+
+  .tag-choose button,
+  .add-tag-tag select,
+  .add-tag-tag button,
+  .add-tag-date input,
+  .add-tag-date button {
+    font-size: 0.6em !important;
+    padding: 5px !important;
+  }
+
+  .announcement-tags .tag {
+    font-size: 0.6em !important;
+    padding: 5px 7px !important;
+  }
+
+  .date-container {
+    font-size: 0.6em !important;
+    padding: 6px !important;
+  }
+
+  .announcement-body p {
+    font-size: 0.75em !important;
+  }
+
+  .announcement-top p {
+    font-size: 0.7em !important;
+  }
+
+  .announcement {
+    padding: 15px 20px !important;
+  }
+
+  .filter-container select {
+    font-size: 0.7em !important;
+    padding: 5px !important;
+  }
+
+  .announcement-images {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-auto-rows: 170px;
+  }
+
+  .image-container img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .image-container .x {
+    width: 15px;
+    height: 15px;
+    font-size: 0.7em;
   }
 }
 
@@ -1081,9 +1295,13 @@ option[disabled] {
   .announcements-div aside .filter {
     display: none;
   } */
+
+  .club-main {
+    grid-template-columns: 0 !important;
+  }
 }
 
-@media screen and (max-width: 560px) {
+@media screen and (max-width: 700px) {
   .description h1,
   .important-dates h1,
   .filter h1,
@@ -1112,6 +1330,7 @@ option[disabled] {
     grid-column-end: 20;
     grid-row-start: 1;
     grid-row-end: 4;
+    margin: 0;
   }
 
   .club-main {
@@ -1177,10 +1396,10 @@ option[disabled] {
     font-size: 10px;
   }
 
-  .person img {
+  /* .person img {
     height: 20px;
     width: 20px;
-  }
+  } */
 
   .meeting {
     flex-direction: column;
@@ -1214,8 +1433,28 @@ option[disabled] {
   }
 
   .attendance-yes-no {
-    margin-top: 10px;
     justify-content: flex-start;
+  }
+
+  .club-attendance-page
+    section
+    .member-page-member
+    .person-wrapper
+    .attendance-yes-no {
+    margin-top: 10px;
+  }
+
+  .club-dues-page
+    section
+    .member-page-member
+    .person-wrapper
+    .attendance-yes-no {
+    margin-top: 10px;
+  }
+
+  .person-wrapper {
+    display: flex;
+    align-items: center !important;
   }
 }
 
@@ -1463,12 +1702,33 @@ button.saveTag {
   transition: all 0.3s;
 }
 
+.deleteTag {
+  margin-top: 10px;
+  border: 1px solid var(--no) !important;
+  color: var(--no) !important;
+}
+
+.deleteTag:hover {
+  cursor: pointer;
+  background-color: var(--no) !important;
+  color: white !important;
+  transition: all 0.3s;
+}
+
 .announcement-tags {
   display: flex;
   gap: 15px;
   margin-left: 40px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+/* ::placeholder {
+  color: var(--neutral);
+} */
+
+.announcement-new::placeholder {
+  color: var(--neutral);
 }
 
 .add-tag {
@@ -1478,7 +1738,6 @@ button.saveTag {
   color: white;
   display: flex;
   justify-content: center;
-  align-items: center;
   border-radius: 50%;
 }
 
@@ -1506,15 +1765,22 @@ button.saveTag {
 }
 
 .add-image {
-  width: 120px;
   display: flex;
-  justify-content: space-between;
-  padding: 5px 20px 5px 10px;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 20px 5px 20px;
   background: none;
   border: 1px solid var(--primary-color);
   border-radius: 10px;
   color: var(--primary-color);
   font-size: 15px;
+}
+
+.add-image:hover {
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: all 0.3s;
 }
 
 input[type="file"] {
@@ -1527,8 +1793,9 @@ input[type="file"] {
 
 .send-new-announcement {
   width: 80px;
-  padding: 15px 0px 15px 0px;
+  padding: 5px 0px 5px 0px;
   border-radius: 10px;
+  font-size: 15px;
   border: 1px solid var(--primary-color);
   background-color: none;
   color: var(--primary-color);
