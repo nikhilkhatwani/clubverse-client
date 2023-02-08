@@ -896,6 +896,50 @@ option[disabled] {
   align-items: center;
 }
 
+.announcement-files {
+  /* margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-auto-rows: 220px;
+  grid-gap: 10px; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.file-container {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #c4c4c4;
+}
+
+.file-details {
+}
+
+.file-name {
+  font-size: 1em;
+  font-weight: 500;
+  color: #000;
+}
+
+.file-size {
+  font-size: 0.8em;
+  font-weight: 500;
+  color: #757575;
+}
+
+.hover-file:hover {
+  background-color: #c4c4c4;
+  border-radius: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1150px) {
@@ -1140,6 +1184,30 @@ option[disabled] {
     height: 15px;
     font-size: 0.7em;
   }
+
+  .file-container {
+    width: 100%;
+  }
+
+  .file-name {
+    font-size: 0.85em !important;
+  }
+
+  .file-size {
+    font-size: 0.7em !important;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .bottom {
+    flex-direction: column;
+    align-items: center !important;
+    margin-left: 0px !important;
+  }
+
+  .bottom-left {
+    margin-bottom: 10px;
+  }
 }
 
 @media screen and (max-width: 800px) {
@@ -1299,6 +1367,16 @@ option[disabled] {
   .club-main {
     grid-template-columns: 0 !important;
   }
+
+  .bottom {
+    flex-direction: row;
+    align-items: center !important;
+    margin-left: 0px !important;
+  }
+
+  .bottom-left {
+    margin-bottom: 0px;
+  }
 }
 
 @media screen and (max-width: 700px) {
@@ -1409,6 +1487,16 @@ option[disabled] {
   #meeting {
     width: 200px;
     text-align: center;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: center !important;
+    margin-left: 0px !important;
+  }
+
+  .bottom-left {
+    margin-bottom: 10px;
   }
 }
 
@@ -1774,6 +1862,12 @@ button.saveTag {
   border-radius: 10px;
   color: var(--primary-color);
   font-size: 15px;
+}
+
+.bottom-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .add-image:hover {

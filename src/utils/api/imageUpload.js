@@ -1,4 +1,4 @@
-import { uploadImages } from "./calls/images";
+import { uploadImages } from "./calls/files";
 
 export const imageUpload = async (files) => {
   let convertedImages = [];

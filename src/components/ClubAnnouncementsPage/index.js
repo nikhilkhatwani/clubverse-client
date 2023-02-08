@@ -3,6 +3,7 @@ import moment from "moment";
 import { clubAnnouncementNew, clubJoin } from "../../utils/api/calls/clubs";
 import { imageUpload } from "../../utils/api/imageUpload";
 import Loading from "../Loading";
+import { uploadFile } from "../../utils/api/calls/files";
 
 export default function ClubAnnouncementsPage({
   user,
@@ -16,6 +17,7 @@ export default function ClubAnnouncementsPage({
     message: "",
     images: [],
     tags: [],
+    files: [],
     files: [],
     dateReminder: null,
   });
@@ -118,55 +120,53 @@ export default function ClubAnnouncementsPage({
     });
   };
 
-  // const handleFileUpload = async (e) => {
-  //   const files = e.target.files;
-  //   if (!files[0]) return;
+  const handleFileUpload = async (e) => {
+    const files = e.target.files;
+    if (!files[0]) return;
 
-  //   setFileLoading(true);
+    setFileLoading(true);
 
-  //   function stringify(obj) {
-  //     const replacer = [];
-  //     for (const key in obj) {
-  //       replacer.push(key);
-  //     }
-  //     return JSON.stringify(obj, replacer);
-  //   }
+    const firstFile = files[0];
 
-  //   const firstFile = files[0];
+    const readFileContent = (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    };
 
-  //   const readFileContent = (file) => {
-  //     return new Promise((resolve, reject) => {
-  //       const reader = new FileReader();
-  //       reader.onerror = reject;
-  //       reader.onload = () => resolve(reader.result);
-  //       reader.readAsDataURL(file);
-  //     });
-  //   };
+    let fileContent = await readFileContent(firstFile);
+    let replace = fileContent.replace(
+      ["data:" + firstFile.type + ";base64,"],
+      [""]
+    );
 
-  //   let fileContent = await readFileContent(firstFile);
-  //   let replace = fileContent.replace(
-  //     ["data:" + firstFile.type + ";base64,"],
-  //     [""]
-  //   );
+    let file = {
+      name: firstFile.name,
+      type: firstFile.type,
+      size: firstFile.size,
+      content: replace,
+    };
 
-  //   let file = {
-  //     name: firstFile.name,
-  //     type: firstFile.type,
-  //     size: firstFile.size,
-  //     content: replace,
-  //   };
-
-  //   let response = await fetch("http://localhost:5002/api/upload", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: stringify(file),
-  //   });
-
-  //   let data = response.json();
-  //   console.log(data);
-  // };
+    let response = await uploadFile(file);
+    setFileLoading(false);
+    if (response.success) {
+      const newFile = {
+        name: response.name,
+        size: response.size,
+        url: response.link,
+      };
+      console.log(newFile);
+      setNewAnnouncement({
+        ...newAnnouncement,
+        files: newAnnouncement.files.concat(newFile),
+      });
+    } else {
+      console.log(response.message);
+    }
+  };
 
   return (
     <div className="announcements-div club-main">
@@ -473,6 +473,34 @@ export default function ClubAnnouncementsPage({
               value={newAnnouncement.message}
               onChange={(e) => onChange(e, "announcementText")}
             />
+            {newAnnouncement.files.length > 0 && (
+              <div className="announcement-files">
+                {newAnnouncement.files.map((file, i) => (
+                  <div className="file-container" key={i}>
+                    <div className="file-details">
+                      <div className="file-name">{file.name}</div>
+                      <div className="file-size">
+                        {file.size > 1000000
+                          ? (file.size / 1000000).toFixed(2) + " MB"
+                          : (file.size / 1000).toFixed(2) + " KB"}{" "}
+                        | {file.name.split(".").pop()}
+                      </div>
+                    </div>
+                    <div
+                      className="x"
+                      onClick={() => {
+                        let newAnnouncement1 = { ...newAnnouncement };
+                        newAnnouncement1.files.splice(i, 1);
+                        setNewAnnouncement(newAnnouncement1);
+                      }}
+                    >
+                      x
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {newAnnouncement.images.length > 0 && (
               <div className="announcement-images">
                 {newAnnouncement.images.map((image, i) => (
@@ -492,40 +520,47 @@ export default function ClubAnnouncementsPage({
                 ))}
               </div>
             )}
+
             <div className="bottom">
-              <label className="add-image">
-                <input
-                  type="file"
-                  id="btn_input"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                />
-                {imageLoading ? (
-                  <Loading insideWrapper={false} size="small" />
-                ) : (
-                  <>
-                    <span>+</span>Add image
-                  </>
-                )}
-              </label>
+              <div className="bottom-left">
+                <label
+                  className={imageLoading ? "add-image disabled" : "add-image"}
+                >
+                  <input
+                    type="file"
+                    id="btn_input"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageUpload}
+                  />
+                  {imageLoading ? (
+                    <Loading insideWrapper={false} size="small" />
+                  ) : (
+                    <>
+                      <span>+</span>Add image
+                    </>
+                  )}
+                </label>
 
-              {/* <label className="add-image add-file">
-                <input
-                  type="file"
-                  id="btn_input"
-                  accept="!image/*"
-                  onChange={handleFileUpload}
-                />
+                <label
+                  className={fileLoading ? "add-image disabled" : "add-image"}
+                >
+                  <input
+                    type="file"
+                    id="btn_input"
+                    accept="!image/*"
+                    onChange={handleFileUpload}
+                  />
 
-                {fileLoading ? (
-                  <Loading insideWrapper={false} size="small" />
-                ) : (
-                  <>
-                    <span>+</span>Add file
-                  </>
-                )}
-              </label> */}
+                  {fileLoading ? (
+                    <Loading insideWrapper={false} size="small" />
+                  ) : (
+                    <>
+                      <span>+</span>Add file
+                    </>
+                  )}
+                </label>
+              </div>
               <button
                 className="send-new-announcement"
                 onClick={sendAnnouncement}
@@ -603,6 +638,30 @@ export default function ClubAnnouncementsPage({
               <div className="announcement-body">
                 <p>{announcement.message}</p>
               </div>
+              {announcement.files.length > 0 && (
+                <div className="announcement-files">
+                  {announcement.files.map((file, i) => (
+                    <div
+                      className="file-container hover-file"
+                      key={i}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        window.open(file.url);
+                      }}
+                    >
+                      <div className="file-details">
+                        <div className="file-name">{file.name}</div>
+                        <div className="file-size">
+                          {file.size > 1000000
+                            ? (file.size / 1000000).toFixed(2) + " MB"
+                            : (file.size / 1000).toFixed(2) + " KB"}{" "}
+                          | {file.name.split(".").pop()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               {announcement.images.length > 0 && (
                 <div className="announcement-images">
                   {announcement.images.map((image, i) => (

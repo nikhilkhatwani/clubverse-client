@@ -13,7 +13,7 @@ export default function UserSettingsPage({ user, setUser, setToken, token }) {
   const [error, setError] = useState("");
 
   const [email, setEmail] = useState(user.email);
-
+  const [schoolData, setSchoolData] = useState({});
   const navigate = useNavigate();
 
   const handleProfilePicChange = async (e) => {
