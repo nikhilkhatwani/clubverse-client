@@ -180,6 +180,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 15px;
 }
 
 .main-img-container img {
