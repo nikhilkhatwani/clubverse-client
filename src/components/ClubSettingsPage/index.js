@@ -616,7 +616,7 @@ export default function ClubSettingsPage({
               The following listed are tags that can be used with messages.
               Members can use these tags to filter out specific messages. By
               default, "Public" is a tag that when attached to a message, the
-              message shows up for students that are not part of the club that
+              message shows up for students that are not part of the club but
               are viewing the club.
             </p>
             <div className="tag-container">
@@ -722,32 +722,49 @@ export default function ClubSettingsPage({
                   >
                     x
                   </div>
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    name="name"
-                    value={tagFormData.name}
-                    onChange={(e) => {
-                      setTagFormData({
-                        ...tagFormData,
-                        name: e.target.value,
-                      });
-                    }}
-                  />
-                  <input
-                    type="color"
-                    name="color"
-                    value={tagFormData.color}
-                    onChange={(e) => {
-                      setTagFormData({ ...tagFormData, color: e.target.value });
-                    }}
-                  />
-                  <button className="saveTag" onClick={editTag}>
-                    Save
-                  </button>
-                  <button className="saveTag deleteTag" onClick={deleteTag}>
-                    Delete
-                  </button>
+
+                  {club.tags[selectedTag].default == true ? (
+                    <div className="defaultTag">
+                      <p>Default tags cannot be edited.</p>
+                      <p>
+                        This is a public tag. Non-members who are viewing
+                        insights of this club will be able to see announcements
+                        that have this tag attached.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        placeholder="Name"
+                        name="name"
+                        value={tagFormData.name}
+                        onChange={(e) => {
+                          setTagFormData({
+                            ...tagFormData,
+                            name: e.target.value,
+                          });
+                        }}
+                      />
+                      <input
+                        type="color"
+                        name="color"
+                        value={tagFormData.color}
+                        onChange={(e) => {
+                          setTagFormData({
+                            ...tagFormData,
+                            color: e.target.value,
+                          });
+                        }}
+                      />
+                      <button className="saveTag" onClick={editTag}>
+                        Save
+                      </button>
+                      <button className="saveTag deleteTag" onClick={deleteTag}>
+                        Delete
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -820,7 +837,12 @@ export default function ClubSettingsPage({
         </div>
       </section>
       <section className="leave-club">
-        <h2>{user.type === "sponsor" ? "Delete" : "Leave"} Club</h2>
+        <h2>
+          {user.type === "sponsor" || user.type === "admin"
+            ? "Delete"
+            : "Leave"}{" "}
+          Club
+        </h2>
         <p>
           {" "}
           {user.type === "sponsor"
@@ -829,11 +851,15 @@ export default function ClubSettingsPage({
         </p>
         <button
           onClick={
-            user.type === "sponsor" ? () => onDeleteClub() : () => onLeaveClub()
+            user.type === "sponsor" || user.type === "admin"
+              ? () => onDeleteClub()
+              : () => onLeaveClub()
           }
           className="leave-button"
         >
-          {user.type === "sponsor" ? "Delete" : "Leave"}
+          {user.type === "sponsor" || user.type === "admin"
+            ? "Delete"
+            : "Leave"}
         </button>
       </section>
     </div>

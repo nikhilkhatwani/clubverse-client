@@ -13,6 +13,8 @@ import { getColor } from "../../utils/api/colors";
 export default function SchoolPage({ user, setUser, setToken, token }) {
   let { schoolLink } = useParams();
 
+  const pending = new URLSearchParams(window.location.search).get("pending");
+
   const [myClubs, setMyClubs] = useState([]);
   const [otherClubs, setOtherClubs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -130,11 +132,20 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
       </div>
       <div className="school-clubs-wrapper">
         <section className="school-clubs">
+          {pending && (
+            <div className="pending">
+              <h1>
+                Your new club is pending approval from the administrator of the
+                school
+              </h1>
+            </div>
+          )}
           <div>
             {error && <p className="error">{error}</p>}
             <h1 className="school-clubs-title">
               {user.type === "admin" ? "All Clubs" : "My Clubs"}
             </h1>
+
             <section className="my-clubs">
               {loading ? (
                 <Loading insideWrapper={false} />

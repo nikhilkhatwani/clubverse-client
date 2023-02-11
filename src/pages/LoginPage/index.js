@@ -92,52 +92,61 @@ export default function LoginPage({ setToken, setUser }) {
         </div>
       </div>
       <div className="login-form">
-        <h2>Login</h2>
-        <p>
-          School not listed? <Link to="/register">Register as an admin</Link>
-        </p>
-        {error && <p className="error">{error}</p>}
-        <div className="login-form-group">
-          <select
-            name="school"
-            id=""
-            value={formData.school}
-            onChange={onChange}
-          >
-            <option value="" disabled>
-              Select school
-            </option>
-            {schools.map((school, i) => (
-              <option key={i} value={school.name}>
-                {school.name}
-              </option>
-            ))}
-          </select>
-          <input
-            type="text"
-            value={formData.username}
-            placeholder="Username"
-            name="username"
-            onChange={onChange}
-            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
-          />
-          <input
-            type="password"
-            value={formData.password}
-            placeholder="Password"
-            name="password"
-            onChange={onChange}
-            onKeyDown={(e) => handleKeyDown(e, onSubmit)}
-          />
+        {loading ? (
+          <div className="login-loading-wrapper">
+            <Loading insideWrapper={false} color="white" />
+          </div>
+        ) : (
+          <>
+            <h2>Login</h2>
+            <p>
+              School not listed?{" "}
+              <Link to="/register">Register as an admin</Link>
+            </p>
+            {error && <p className="error">{error}</p>}
+            <div className="login-form-group">
+              <select
+                name="school"
+                id=""
+                value={formData.school}
+                onChange={onChange}
+              >
+                <option value="" disabled>
+                  Select school
+                </option>
+                {schools.map((school, i) => (
+                  <option key={i} value={school.name}>
+                    {school.name}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                value={formData.username}
+                placeholder="Username"
+                name="username"
+                onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
+              />
+              <input
+                type="password"
+                value={formData.password}
+                placeholder="Password"
+                name="password"
+                onChange={onChange}
+                onKeyDown={(e) => handleKeyDown(e, onSubmit)}
+              />
 
-          <button
-            disabled={isButtonLoading}
-            onClick={onSubmit}
-            className="go-forward"
-          >
-            {isButtonLoading ? "Loading..." : "Login"}
-          </button>
-        </div>
+              <button
+                disabled={isButtonLoading}
+                onClick={onSubmit}
+                className="go-forward"
+              >
+                {isButtonLoading ? "Loading..." : "Login"}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -25,6 +25,12 @@ body {
   gap: 30px;
 }
 
+.login-loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-title {
   display: flex;
   align-items: center;

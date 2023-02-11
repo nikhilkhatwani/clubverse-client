@@ -68,14 +68,14 @@ export default function LandingPage() {
               <img src="" alt="" />
             </div>
             <div className="main-text-side">
-              <h1>Lorem ipsum</h1>
+              <h1>A platform just for clubs.</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse pellentesque sed neque quis porttitor. Suspendisse
-                maximus, leo in molestie ullamcorper, erat orci suscipit mi,
-                rutrum semper ex nunc ut mi. Nam at venenatis felis.
-                Pellentesque id cursus nibh. Cras interdum hendrerit erat sit
-                amet varius. Pellentesque interdum pretium felis
+                Clubverse allows the administrator to setup accounts for all
+                students and teachers so that they can focus on their clubs. All
+                clubs are readily accessible to students in one place, so
+                there's no need for students to try and figure out exactly a
+                specific club is or to stress over when and where a club's
+                meetings take place.
               </p>
             </div>
           </div>
@@ -84,14 +84,13 @@ export default function LandingPage() {
               <img src="" alt="" />
             </div>
             <div className="main-text-side">
-              <h1>Lorem ipsum</h1>
+              <h1>Stay in touch with members.</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse pellentesque sed neque quis porttitor. Suspendisse
-                maximus, leo in molestie ullamcorper, erat orci suscipit mi,
-                rutrum semper ex nunc ut mi. Nam at venenatis felis.
-                Pellentesque id cursus nibh. Cras interdum hendrerit erat sit
-                amet varius. Pellentesque interdum pretium felis
+                Clubverse allows club sponsors and officers to easily make
+                announcements and categorize them for specific audiences
+                (Public, Members only, Officers only). There is no longer a need
+                for students to go from platform to platform checking for new
+                announcements from a club they are in.
               </p>
             </div>
           </div>
@@ -100,14 +99,27 @@ export default function LandingPage() {
               <img src="" alt="" />
             </div>
             <div className="main-text-side">
-              <h1>Lorem ipsum</h1>
+              <h1>Manage club dues.</h1>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse pellentesque sed neque quis porttitor. Suspendisse
-                maximus, leo in molestie ullamcorper, erat orci suscipit mi,
-                rutrum semper ex nunc ut mi. Nam at venenatis felis.
-                Pellentesque id cursus nibh. Cras interdum hendrerit erat sit
-                amet varius. Pellentesque interdum pretium felis
+                Gone are the days of sorting through checks and receipts to
+                check whether a member has submitted dues or not. Sponsors can
+                easily keep track of who has and has not paid their dues. This
+                makes keeping track of funds a lot easier for club sponsors.
+              </p>
+            </div>
+          </div>
+          <div className="main-info-group">
+            <div className="main-img-container">
+              <img src="" alt="" />
+            </div>
+            <div className="main-text-side">
+              <h1>Manage attendance.</h1>
+              <p>
+                Instead of a google form or a physical sign in sheet, Clubverse
+                manages attendance effectively by allowing sponsors and officers
+                to create a meeting with the click of a button and keep track of
+                who attends and who doesn't. Clubverse also allows sponsors to
+                easily see how many absences a member has.
               </p>
             </div>
           </div>

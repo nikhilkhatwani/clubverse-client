@@ -168,6 +168,39 @@ export default function ClubAnnouncementsPage({
     }
   };
 
+  const timeFromNow = (date) => {
+    let fixedDate = date.replace("T", " ");
+    let now = new Date();
+    let time = new Date(fixedDate);
+    let diff = now - time;
+    let seconds = Math.floor(diff / 1000);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+
+    if (seconds < 30) {
+      return "Just now";
+    }
+
+    if (seconds < 60) {
+      return `${seconds} ${seconds == 1 ? "second" : "seconds"} ago`;
+    }
+
+    if (minutes < 60) {
+      return `${minutes} ${minutes == 1 ? "minute" : "minutes"} ago`;
+    }
+
+    if (hours < 24) {
+      return `${hours} ${hours == 1 ? "hour" : "hours"} ago`;
+    }
+
+    if (days < 7) {
+      return `${days} ${days == 1 ? "day" : "days"} ago`;
+    }
+
+    return moment(date).format("MM/DD/YY hh:mm a");
+  };
+
   return (
     <div className="announcements-div club-main">
       <aside>
@@ -600,6 +633,22 @@ export default function ClubAnnouncementsPage({
             if (filterData.user == -1) return true;
             return announcement.user._id == filterData.user;
           })
+          .filter((announcement) => {
+            const foundClub =
+              club.members.find((m) => m.user._id == user._id) ||
+              club.sponsors.find((m) => m._id == user._id);
+
+            if (user.type === "admin" || foundClub) return true;
+
+            const tag = club.tags.find((t) => t.default === true);
+            if (tag) {
+              return (
+                announcement.tags.indexOf(
+                  announcement.tags.find((t) => t._id == tag._id)
+                ) !== -1
+              );
+            }
+          })
           .map((announcement, i) => (
             <div className="announcement" key={i}>
               <div className="announcement-top">
@@ -612,7 +661,7 @@ export default function ClubAnnouncementsPage({
                       : null}
                   </h3>
                 </div>
-                <p>{moment(announcement.createdAt).fromNow()}</p>
+                <p>{timeFromNow(announcement.createdAt)}</p>
               </div>
 
               <div className="announcement-tags">

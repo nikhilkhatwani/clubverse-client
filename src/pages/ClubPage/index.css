@@ -24,6 +24,11 @@ body {
   font-family: "Chivo", sans-serif;
 }
 
+.defaultTag {
+  text-align: center;
+  font-size: 15px;
+}
+
 .nav h1 {
   font-size: 2.1em;
   font-weight: 600;
@@ -290,7 +295,7 @@ aside {
 .dates {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 5px;
 }
 

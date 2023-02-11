@@ -212,7 +212,7 @@ export default function UserSettingsPage({ user, setUser, setToken, token }) {
         </div>
       </div>
       {user.type === "admin" ? (
-        <div className="user-settings-page-wrapper">
+        <div className="user-settings-page-wrapper" style={{ display: "none" }}>
           <div className="user-settings-page-content">
             <div className="user-settings-title">
               <h1>School Settings</h1>
