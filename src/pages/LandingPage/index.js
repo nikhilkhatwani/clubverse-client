@@ -65,7 +65,7 @@ export default function LandingPage() {
         <div className="main-section-wrapper">
           <div className="main-info-group">
             <div className="main-img-container">
-              <img src="" alt="" />
+              <img src="assets/main_section.png" alt="" />
             </div>
             <div className="main-text-side">
               <h1>A platform just for clubs.</h1>
@@ -81,7 +81,7 @@ export default function LandingPage() {
           </div>
           <div className="main-info-group">
             <div className="main-img-container">
-              <img src="" alt="" />
+              <img src="assets/members_section.jpg" alt="" />
             </div>
             <div className="main-text-side">
               <h1>Stay in touch with members.</h1>
@@ -96,7 +96,7 @@ export default function LandingPage() {
           </div>
           <div className="main-info-group">
             <div className="main-img-container">
-              <img src="" alt="" />
+              <img src="assets/dues_section.jpg" alt="" />
             </div>
             <div className="main-text-side">
               <h1>Manage club dues.</h1>
@@ -110,7 +110,11 @@ export default function LandingPage() {
           </div>
           <div className="main-info-group">
             <div className="main-img-container">
-              <img src="" alt="" />
+              <img
+                className="main-img-container-attendance"
+                src="assets/attendance_section.jpg"
+                alt=""
+              />
             </div>
             <div className="main-text-side">
               <h1>Manage attendance.</h1>
@@ -147,6 +151,16 @@ export default function LandingPage() {
               <div>
                 <a target="_blank" href="https://github.com/Clubverse-TSA/">
                   Github
+                </a>
+              </div>
+              <div>
+                <a target="_blank" href="assets/WORK_LOG.pdf">
+                  Work Log
+                </a>
+              </div>
+              <div>
+                <a target="_blank" href="assets/COPYRIGHT_LIST.pdf">
+                  Copyright List
                 </a>
               </div>
               <div>

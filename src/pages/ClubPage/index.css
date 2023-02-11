@@ -477,7 +477,7 @@ aside {
 .member-bar-member-wrapper {
   width: 80%;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   padding: 5px;
   gap: 10px;
   border: 1px solid transparent;

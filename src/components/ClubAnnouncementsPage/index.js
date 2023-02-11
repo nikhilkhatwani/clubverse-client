@@ -581,7 +581,6 @@ export default function ClubAnnouncementsPage({
                   <input
                     type="file"
                     id="btn_input"
-                    accept="!image/*"
                     onChange={handleFileUpload}
                   />
 

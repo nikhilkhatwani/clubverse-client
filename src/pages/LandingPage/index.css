@@ -177,13 +177,21 @@
   width: 200px;
   border: 5px solid var(--primary-color);
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-img-container img {
-  height: 100%;
-  width: 100%;
+  height: 75%;
+  width: 75%;
   object-fit: cover;
   object-position: center;
+}
+
+.main-img-container-attendance {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .main-text-side {
@@ -213,7 +221,7 @@ footer {
 }
 
 .footer-wrapper {
-  max-width: 700px;
+  /* max-width: 700px; */
   padding: 10px;
 }
 
