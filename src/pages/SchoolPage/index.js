@@ -244,7 +244,10 @@ export default function SchoolPage({ user, setUser, setToken, token }) {
                             }
                             key={i}
                           >
-                            <div className="club-card-color">
+                            <div
+                              className="club-card-color"
+                              style={{ backgroundColor: getColor(i) }}
+                            >
                               <div className="icon"></div>
                             </div>
                             <div className="club-card-inner">
