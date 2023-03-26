@@ -113,7 +113,6 @@ export default function UserSettingsPage({ user, setUser, setToken, token }) {
     if (user.school === undefined || user.school.link !== schoolLink) {
       navigate(`/${user.school.link}/user/settings`);
     }
-    console.log(user);
   }, []);
 
   return (

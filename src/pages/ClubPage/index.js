@@ -10,6 +10,7 @@ import {
   ClubMembersPage,
   ClubSettingsPage,
   ClubAnnouncementsPage,
+  UserModal,
 } from "../../components";
 
 export default function ClubPage({ user, setUser }) {
@@ -30,6 +31,19 @@ export default function ClubPage({ user, setUser }) {
   const [club, setClub] = useState({});
   const [hasPermissions, setHasPermissions] = useState(false);
   const [foundUser, setFoundUser] = useState({});
+
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [modalSettings, setModalSettings] = useState({
+    title: "",
+    users: [],
+    question: "",
+    votingOptions: [],
+    type: "userList",
+    userId: user._id,
+    clubId: club._id,
+    announcementId: "",
+    club,
+  });
 
   const [loading, setLoading] = useState(true);
 
@@ -119,6 +133,22 @@ export default function ClubPage({ user, setUser }) {
   if (club)
     return (
       <div className="club-body">
+        {openUserModal && (
+          <UserModal
+            title={modalSettings.title}
+            users={modalSettings.users}
+            question={modalSettings.question}
+            votingOptions={modalSettings.votingOptions}
+            setOpenUserModal={setOpenUserModal}
+            type={modalSettings.type}
+            userId={modalSettings.userId}
+            clubId={modalSettings.clubId}
+            announcementId={modalSettings.announcementId}
+            club={modalSettings.club}
+            setClub={setClub}
+            user={user}
+          />
+        )}
         <div className="nav-wrapper">
           <nav className="nav">
             <div>
@@ -286,6 +316,8 @@ export default function ClubPage({ user, setUser }) {
             setSelected={setSelected}
             hasPermissions={hasPermissions}
             foundUser={foundUser}
+            setOpenUserModal={setOpenUserModal}
+            setModalSettings={setModalSettings}
           />
         ) : selected === 1 ? (
           <ClubMembersPage

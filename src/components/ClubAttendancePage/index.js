@@ -45,7 +45,6 @@ export default function ClubAttendancePage({
       club1.meetings = response.club.meetings;
       setClub(club1);
     } else {
-      console.log(response);
       setOccupied(false);
       setSelected(0);
     }

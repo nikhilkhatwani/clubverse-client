@@ -4,3 +4,4 @@ export { default as ClubAttendancePage } from "./ClubAttendancePage";
 export { default as ClubDuesPage } from "./ClubDuesPage";
 export { default as ClubMembersPage } from "./ClubMembersPage";
 export { default as ClubSettingsPage } from "./ClubSettingsPage";
+export { default as UserModal } from "./UserModal";

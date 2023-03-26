@@ -24,7 +24,6 @@ export const imageUpload = async (files) => {
     const image = convertedImages[i];
     let final = image.replace(/^data:image\/[a-z]+;base64,/, "");
     const response = await uploadImages([final]);
-    console.log(response);
     images.push(response.images[0]);
     count++;
   }

@@ -291,7 +291,7 @@ export const clubMeetingDelete = async (clubId, userId, meetingId) => {
 };
 
 export const clubAnnouncementNew = async (clubId, userId, announcement) => {
-  const { message, tags, dateReminder, images, files } = announcement;
+  const { message, tags, dateReminder, images, files, poll } = announcement;
 
   let url = `${API_URL}/clubs/announcements/new`;
 
@@ -303,6 +303,7 @@ export const clubAnnouncementNew = async (clubId, userId, announcement) => {
     date: dateReminder,
     images,
     files,
+    poll,
   };
 
   let response = await fetch(url, {
@@ -453,6 +454,32 @@ export const clubRemoveSponsor = async (clubId, userId, sponsorId) => {
     clubId,
     userId,
     sponsorId,
+  };
+
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};
+
+export const clubPollUpdate = async (
+  userId,
+  clubId,
+  announcementId,
+  selected
+) => {
+  let url = `${API_URL}/clubs/polls/update`;
+
+  let data = {
+    userId,
+    clubId,
+    announcementId,
+    selected,
   };
 
   let response = await fetch(url, {

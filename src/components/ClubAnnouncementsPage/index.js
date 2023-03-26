@@ -12,6 +12,8 @@ export default function ClubAnnouncementsPage({
   setClub,
   hasPermissions,
   foundUser,
+  setOpenUserModal,
+  setModalSettings,
 }) {
   const [newAnnouncement, setNewAnnouncement] = useState({
     message: "",
@@ -20,6 +22,7 @@ export default function ClubAnnouncementsPage({
     files: [],
     files: [],
     dateReminder: null,
+    poll: null,
   });
   const [newAnnouncementError, setNewAnnouncementError] = useState("");
 
@@ -32,8 +35,13 @@ export default function ClubAnnouncementsPage({
   const [openSelect, setOpenSelect] = useState(false);
   const [openTagAdd, setOpenTagAdd] = useState(false);
   const [openDateAdd, setOpenDateAdd] = useState(false);
+  const [openPollAdd, setOpenPollAdd] = useState(false);
   const [selectedTag, setSelectedTag] = useState("0");
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedPoll, setSelectedPoll] = useState({
+    question: "",
+    options: [],
+  });
 
   const [imageLoading, setImageLoading] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
@@ -58,7 +66,7 @@ export default function ClubAnnouncementsPage({
   };
 
   const sendAnnouncement = async () => {
-    let { message, images, tags, files, dateReminder } = newAnnouncement;
+    let { message, images, tags, files, dateReminder, poll } = newAnnouncement;
 
     if (message.length === 0) {
       setNewAnnouncementError("Announcement text cannot be empty");
@@ -75,9 +83,16 @@ export default function ClubAnnouncementsPage({
       user,
       createdAt: new Date().toISOString(),
       club,
+      poll,
     };
 
-    club1.announcements.push(announcement);
+    let copy = { ...announcement };
+
+    copy.poll.options.map(
+      (o, i) => (copy.poll.options[i] = { option: o, votes: [] })
+    );
+
+    club1.announcements.push(copy);
     setClub(club1);
 
     setNewAnnouncement({
@@ -86,14 +101,20 @@ export default function ClubAnnouncementsPage({
       tags: [],
       files: [],
       dateReminder: null,
+      poll: null,
     });
 
     setSelectedTag("0");
     setSelectedDate("");
+    setSelectedPoll({
+      question: "",
+      options: [],
+    });
 
     setOpenSelect(false);
     setOpenTagAdd(false);
     setOpenDateAdd(false);
+    setOpenPollAdd(false);
 
     let response = await clubAnnouncementNew(club._id, user._id, announcement);
 
@@ -158,13 +179,11 @@ export default function ClubAnnouncementsPage({
         size: response.size,
         url: response.link,
       };
-      console.log(newFile);
       setNewAnnouncement({
         ...newAnnouncement,
         files: newAnnouncement.files.concat(newFile),
       });
     } else {
-      console.log(response.message);
     }
   };
 
@@ -255,7 +274,6 @@ export default function ClubAnnouncementsPage({
                     : {}
                 }
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setFilterData({ ...filterData, tag: e.target.value });
                   setClub(club);
                 }}
@@ -383,17 +401,21 @@ export default function ClubAnnouncementsPage({
                   </div>
                 </div>
               ) : null}
+
               <div
                 className="add-tag"
                 onClick={() => {
                   setOpenSelect(!openSelect);
                   setOpenTagAdd(false);
                   setOpenDateAdd(false);
+                  setOpenPollAdd(false);
                   setSelectedTag("0");
                   setSelectedDate("");
                 }}
               >
-                {openTagAdd || openDateAdd || openSelect ? "x" : "+"}
+                {openTagAdd || openDateAdd || openPollAdd || openSelect
+                  ? "x"
+                  : "+"}
               </div>
 
               {openSelect && (
@@ -419,6 +441,18 @@ export default function ClubAnnouncementsPage({
                     {newAnnouncement.dateReminder !== null
                       ? "Edit Date"
                       : "New Date"}
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setOpenPollAdd(!openPollAdd);
+                      setOpenSelect(!openSelect);
+                      if (newAnnouncement.poll !== null) {
+                        setSelectedPoll(newAnnouncement.poll);
+                      }
+                    }}
+                  >
+                    {newAnnouncement.poll !== null ? "Edit Poll" : "New Poll"}
                   </button>
                 </div>
               )}
@@ -495,7 +529,92 @@ export default function ClubAnnouncementsPage({
                       setSelectedDate("");
                     }}
                   >
-                    Add
+                    {newAnnouncement.dateReminder !== null ? "Edit" : "Add"}
+                  </button>
+                </div>
+              )}
+
+              {openPollAdd && (
+                <div className="add-tag-poll">
+                  <div className="poll-container">
+                    <h3>Question</h3>
+                    <input
+                      type="text"
+                      placeholder="Poll Question"
+                      className="poll-question"
+                      value={selectedPoll.question}
+                      onChange={(e) => {
+                        let newPoll = { ...selectedPoll };
+                        newPoll.question = e.target.value;
+                        setSelectedPoll(newPoll);
+                      }}
+                    />
+
+                    <div className="poll-options">
+                      <h3>Options</h3>
+                      {selectedPoll.options.map((option, i) => (
+                        <div className="poll-option" key={i}>
+                          <input
+                            type="text"
+                            placeholder="Option"
+                            value={option}
+                            onChange={(e) => {
+                              let newPoll = { ...selectedPoll };
+                              newPoll.options[i] = e.target.value;
+                              setSelectedPoll(newPoll);
+                            }}
+                          />
+                          <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              let newPoll = { ...selectedPoll };
+                              newPoll.options.splice(i, 1);
+                              setSelectedPoll(newPoll);
+                            }}
+                          >
+                            x
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div
+                    className="add-option"
+                    onClick={() => {
+                      let newPoll = { ...selectedPoll };
+                      newPoll.options.push("");
+                      setSelectedPoll(newPoll);
+                    }}
+                  >
+                    + Add Option
+                  </div>
+                  <button
+                    disabled={selectedPoll.question === ""}
+                    className={
+                      selectedPoll.question === ""
+                        ? "disabled"
+                        : selectedPoll.options.length < 2
+                        ? "disabled"
+                        : selectedPoll.options.some((option) => option === "")
+                        ? "disabled"
+                        : ""
+                    }
+                    onClick={() => {
+                      if (selectedPoll.question === "") return;
+                      if (selectedPoll.options.length < 2) return;
+                      if (selectedPoll.options.some((option) => option === ""))
+                        return;
+                      let newAnnouncement1 = { ...newAnnouncement };
+                      newAnnouncement1.poll = selectedPoll;
+                      setNewAnnouncement(newAnnouncement1);
+                      setOpenPollAdd(false);
+                      setSelectedPoll({
+                        question: "",
+                        options: [],
+                      });
+                    }}
+                  >
+                    {newAnnouncement.poll !== null ? "Edit" : "Add"}
                   </button>
                 </div>
               )}
@@ -506,6 +625,7 @@ export default function ClubAnnouncementsPage({
               value={newAnnouncement.message}
               onChange={(e) => onChange(e, "announcementText")}
             />
+
             {newAnnouncement.files.length > 0 && (
               <div className="announcement-files">
                 {newAnnouncement.files.map((file, i) => (
@@ -553,6 +673,49 @@ export default function ClubAnnouncementsPage({
                 ))}
               </div>
             )}
+
+            {newAnnouncement.poll !== null &&
+            newAnnouncement.poll !== undefined &&
+            !openPollAdd ? (
+              <div className="add-tag-poll poll-underneath">
+                <div className="poll-container">
+                  <div className="poll-header">
+                    <h3>Question</h3>
+                    <div
+                      className="x"
+                      onClick={() => {
+                        let newAnnouncement1 = { ...newAnnouncement };
+                        newAnnouncement1.poll = null;
+                        setNewAnnouncement(newAnnouncement1);
+                      }}
+                    >
+                      x
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Poll Question"
+                    className="poll-question"
+                    value={newAnnouncement.poll.question}
+                    disabled
+                  />
+
+                  <div className="poll-options">
+                    <h3>Options</h3>
+                    {newAnnouncement.poll.options.map((option, i) => (
+                      <div className="poll-option" key={i}>
+                        <input
+                          type="text"
+                          placeholder="Option"
+                          value={option}
+                          disabled
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
 
             <div className="bottom">
               <div className="bottom-left">
@@ -659,6 +822,12 @@ export default function ClubAnnouncementsPage({
                       ? announcement.user.lastName
                       : null}
                   </h3>
+                  <link
+                    type="image/png"
+                    sizes="16x16"
+                    rel="icon"
+                    href=".../icons8-link-16.png"
+                  ></link>
                 </div>
                 <p>{timeFromNow(announcement.createdAt)}</p>
               </div>
@@ -719,6 +888,232 @@ export default function ClubAnnouncementsPage({
                   ))}
                 </div>
               )}
+
+              {announcement.poll?.question &&
+              announcement.poll.options.length !== 0 ? (
+                <div className="add-tag-poll">
+                  <div className="poll-container">
+                    <div className="poll-header poll-extended">
+                      <h3>Question</h3>
+                      <div className="poll-header-right">
+                        <div
+                          className="poll-votes"
+                          style={
+                            announcement.poll.options
+                              .map((option) => option.votes)
+                              .flat()
+                              .map((user) => {
+                                const option = announcement.poll?.options?.find(
+                                  (option) =>
+                                    option?.votes?.find(
+                                      (vote) => vote._id == user._id
+                                    )
+                                );
+                                return {
+                                  ...user,
+                                  option: option?.option,
+                                };
+                              }).length === 0
+                              ? { cursor: "not-allowed" }
+                              : { cursor: "pointer" }
+                          }
+                          onClick={() => {
+                            const users = announcement.poll.options
+                              .map((option) => option.votes)
+                              .flat()
+                              .map((user) => {
+                                const option = announcement.poll.options.find(
+                                  (option) =>
+                                    option.votes.find(
+                                      (vote) => vote._id == user._id
+                                    )
+                                );
+                                return {
+                                  ...user,
+                                  option: option.option,
+                                };
+                              });
+
+                            if (users.length === 0) return;
+
+                            setOpenUserModal(true);
+                            setModalSettings({
+                              title: "Voters",
+                              users,
+                            });
+                          }}
+                        >
+                          {announcement.poll?.options
+                            .map((option) => option?.votes?.length)
+                            .reduce((a, b) => a + b, 0)}{" "}
+                          {announcement.poll.options
+                            .map((option) => option?.votes?.length)
+                            .reduce((a, b) => a + b, 0) !== 1
+                            ? "votes"
+                            : "vote"}
+                        </div>
+
+                        <button
+                          className="poll-vote"
+                          onClick={() => {
+                            setOpenUserModal(true);
+                            setModalSettings({
+                              question: announcement.poll.question,
+                              votingOptions: announcement.poll.options,
+                              type: "voting",
+                              announcementId: announcement._id,
+                              clubId: club._id,
+                              userId: user._id,
+                              club,
+                            });
+                          }}
+                        >
+                          {announcement.poll?.options
+                            .map((option) => option.votes)
+                            .flat()
+                            .find((u) => u?._id == user._id)
+                            ? "Change Vote"
+                            : "Vote"}
+                        </button>
+                      </div>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Poll Question"
+                      className="poll-question"
+                      value={announcement.poll?.question}
+                      disabled
+                    />
+                    <h3>Options</h3>
+                    <div className="poll-options">
+                      {announcement.poll.options.map((option, i) => (
+                        <div className="poll-option-display" key={i}>
+                          <div className="option-upper">
+                            <div className="option-name">
+                              {option?.option}{" "}
+                              {option?.votes?.length ===
+                                Math.max(
+                                  ...announcement.poll.options.map(
+                                    (option) => option?.votes?.length
+                                  )
+                                ) &&
+                              announcement.poll.options.filter(
+                                (option) =>
+                                  option.votes?.length ===
+                                  Math.max(
+                                    ...announcement.poll.options.map(
+                                      (option) => option.votes?.length
+                                    )
+                                  )
+                              ).length === 1
+                                ? " | 🏆"
+                                : null}
+                            </div>
+                            <div
+                              className="option-votes"
+                              style={
+                                option.votes?.map((user) => {
+                                  return {
+                                    ...user,
+                                    option: option.option,
+                                  };
+                                }).length === 0
+                                  ? { cursor: "not-allowed" }
+                                  : {}
+                              }
+                              onClick={() => {
+                                const users = option.votes?.map((user) => {
+                                  return {
+                                    ...user,
+                                    option: option.option,
+                                  };
+                                });
+
+                                if (users.length === 0) return;
+
+                                setOpenUserModal(true);
+                                setModalSettings({
+                                  title: "Voters",
+                                  users,
+                                });
+                              }}
+                            >
+                              {option.votes?.length}{" "}
+                              {option.votes?.length !== 1 ? "votes" : "vote"} |{" "}
+                              {(
+                                (option.votes?.length /
+                                  announcement.poll?.options
+                                    .map((option) => option?.votes?.length)
+                                    .reduce((a, b) => a + b, 0)) *
+                                100
+                              ).toFixed(0) === "NaN"
+                                ? 0
+                                : (
+                                    (option.votes?.length /
+                                      announcement.poll.options
+                                        .map((option) => option?.votes?.length)
+                                        .reduce((a, b) => a + b, 0)) *
+                                    100
+                                  ).toFixed(0)}
+                              %
+                            </div>
+                          </div>
+                          <div className="option-bar">
+                            <div
+                              className="option-bar-fill"
+                              style={{
+                                width:
+                                  (
+                                    (option.votes?.length /
+                                      announcement.poll.options
+                                        .map((option) => option?.votes?.length)
+                                        .reduce((a, b) => a + b, 0)) *
+                                    100
+                                  ).toFixed(0) == "NaN"
+                                    ? 0 + "%"
+                                    : (
+                                        (option.votes?.length /
+                                          announcement.poll.options
+                                            .map(
+                                              (option) => option?.votes?.length
+                                            )
+                                            .reduce((a, b) => a + b, 0)) *
+                                        100
+                                      ).toFixed(0) + "%",
+                                backgroundColor:
+                                  option.votes?.length ===
+                                    Math.max(
+                                      ...announcement.poll.options.map(
+                                        (option) => option.votes?.length
+                                      )
+                                    ) &&
+                                  announcement.poll.options.filter(
+                                    (option) =>
+                                      option.votes?.length ===
+                                      Math.max(
+                                        ...announcement.poll.options.map(
+                                          (option) => option.votes?.length
+                                        )
+                                      )
+                                  ).length === 1
+                                    ? "#fdd813"
+                                    : "var(--primary-color)",
+                              }}
+                            ></div>
+                          </div>
+                          {option.votes?.find(
+                            (vote) => vote._id == user._id
+                          ) ? (
+                            <div className="option-voted">
+                              You voted for this option
+                            </div>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           ))}
       </div>
